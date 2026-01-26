@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package primitivas;
-import java.util.*;
 /**
  *
  * @author cesar
@@ -15,7 +14,7 @@ public class Grafo {
     private int cantidadProteinas;
 
     public Grafo(int cantidadInicial) {
-        if (cantidadInicial < 1) {
+        if (cantidadInicial > 1) {
             nombres = new String[cantidadInicial];
             activas = new boolean[cantidadInicial];
             matrizPeso = new int[cantidadInicial][cantidadInicial];
@@ -24,21 +23,21 @@ public class Grafo {
     }
     
     /** 
-    Inicia la matriz, asigna cero si no hay conexión y asigna 999 si hay conexión.
+    Inicia la matriz, asigna cero si no hay conexión y asigna 9999 si hay conexión.
     */
     public void iniciarMatriz(int desde, int hasta){
         for (int i = desde; i < hasta; i++) {
             for (int j = 0; j < hasta; j++) {
-                matrizPeso[i][j] = 999;
+                matrizPeso[i][j] = 9999;
             }
         }
         for (int i = 0; i <hasta; i++) {
             for (int j = desde; j < hasta; j++) {
-                matrizPeso[i][j] = 999;
+                matrizPeso[i][j] = 9999;
             }
         }
         for (int i = 0; i < hasta; i++) {
-            matrizPeso[i][i] = 0;
+            matrizPeso[i][i] = 9999;
         }
 
     }
@@ -55,12 +54,11 @@ public class Grafo {
         return cantidadProteinas++;
     }
     
-    public void agregarConexión (String a, String b, int peso){
-        int ia = agregarProteina(a);
-        int ib = agregarProteina(b);
-        if (ia != ib) {
-            matrizPeso[ia][ib] = peso;
-            matrizPeso[ib][ia] = peso;
+    public void agregarConexión (int a, int b, int peso){
+
+        if (a != b) {
+            matrizPeso[a-1][b-1] = peso;
+            matrizPeso[b-1][a-1] = peso;
         }
     }
     
@@ -69,8 +67,8 @@ public class Grafo {
         if (i != -1) {
             activas[i] = false;
             for (int j = 0; j < cantidadProteinas; j++) {
-                matrizPeso[i][j] = 999;
-                matrizPeso[j][i] = 999;
+                matrizPeso[i][j] = 9999;
+                matrizPeso[j][i] = 9999;
             }
         }
     }
@@ -100,7 +98,7 @@ public class Grafo {
         }
         for (int i = 0; i < nuevaCapa; i++) {
             for (int j = 0; j < nuevaCapa; j++) {
-                nuevaMatrizPeso[i][j] = 0;
+                nuevaMatrizPeso[i][j] = 9999;
             }
         }
         for (int i = 0; i < cantidadProteinas; i++) {
@@ -111,5 +109,40 @@ public class Grafo {
         nombres = nuevosNombres;
         activas = nuevosActivadas;
         matrizPeso = nuevaMatrizPeso;
+    }
+    
+    public boolean estanConectadas (int i, int j){
+        if (i < 0 || j < 0 || i>=cantidadProteinas || j>=cantidadProteinas) {
+            return false;
+        }
+        else {
+            return (i!=j && matrizPeso[i][j] != 0);
+        }
+    }
+    
+    public void imprimirMatrizPeso (){
+        for (int i = 0; i < cantidadProteinas; i++) {
+            for (int j = 0; j < cantidadProteinas; j++) {
+                System.out.print(matrizPeso[i][j]+ " ");
+            }
+            System.out.println("");
+        }
+        
+    }
+
+    public String[] getNombres() {
+        return nombres;
+    }
+
+    public boolean[] getActivas() {
+        return activas;
+    }
+
+    public int[][] getMatrizPeso() {
+        return matrizPeso;
+    }
+
+    public int getCantidadProteinas() {
+        return cantidadProteinas;
     }
 }
