@@ -5,7 +5,7 @@
 package primitivas;
 
 /**
- *
+ *Es un nodo simple con dato y un puntero.
  * @author cesar
  */
 public class Nodo<T> {

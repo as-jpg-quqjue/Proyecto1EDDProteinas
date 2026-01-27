@@ -5,7 +5,7 @@
 package primitivas;
 
 /**
- *
+ *Es una lista primitiva simple con funciones de insertar y buscar posición.
  * @author cesar
  */
 public class Lista<T> {

@@ -7,7 +7,7 @@ package buscadores;
 import primitivas.Grafo;
 
 /**
- *
+ *Busca la proteina con mayor cantidad de conexiones.
  * @author cesar
  */
 public class CentralidadGrado {
@@ -16,8 +16,10 @@ public class CentralidadGrado {
     public CentralidadGrado(Grafo grafo) {
         this.grafoAux = grafo;
     }
-    
-    public int centralidad (){
+    /** 
+    * Devuelve la posición (int) donde esta la proteina con mayor cantidad de conexiones.
+    */
+    public int centralidadPosicion (){
         
         
         int mejorProteina = -1;
@@ -35,6 +37,13 @@ public class CentralidadGrado {
         return mejorProteina;
     }
     
+    /** 
+    * Devuelve el nombre de la proteina con mayor cantidad de conexiones.
+    */
+    public String centralidadNombre (){
+        return grafoAux.getNombres()[this.centralidadPosicion()];
+    }
+    
     public int grado (int i, int n){
         int d = 0;
         
@@ -43,7 +52,6 @@ public class CentralidadGrado {
         }
         for (int j = 0; j < n; j++) {
             if (grafoAux.estanConectadas(i, j)) {
-                System.out.println(i + " " + j);
                 d++;  
             }
         }

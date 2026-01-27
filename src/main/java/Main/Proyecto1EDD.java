@@ -16,20 +16,22 @@ public class Proyecto1EDD {
     public static void main(String[] args) {
         System.out.println("Hello World!");
         
+        //Ejemplo de Grafo
         Grafo grafo = new Grafo(5);
-                
+        
+        grafo.agregarProteina("a1");
         grafo.agregarProteina("b1");
         grafo.agregarProteina("c1");
-        grafo.agregarProteina("a1");
         grafo.agregarProteina("d1");
         
-        grafo.agregarConexión(3, 1, 20);
-        grafo.agregarConexión(3, 2, 30);
-        grafo.agregarConexión (3, 4, 16);
-        grafo.agregarConexión(2, 4, 25);
+        grafo.agregarConexión("a1", "b1", 20);
+        grafo.agregarConexión("a1", "c1", 30);
+        grafo.agregarConexión ("a1", "d1", 16);
+        grafo.agregarConexión("b1", "d1", 25);
         
         grafo.imprimirMatrizPeso();
         
-        System.out.println(new CentralidadGrado(grafo).centralidad());
+        System.out.println(new CentralidadGrado(grafo).centralidadPosicion());
+        System.out.println(new CentralidadGrado(grafo).centralidadNombre());
     }
 }
