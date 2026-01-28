@@ -55,7 +55,7 @@ public class Grafo {
     }
     
     public void agregarConexión (int a, int b, int peso){
-
+           //COMENTARIO: se insertan los datos de las posiciones contando desde 1, no desde 0 (se inserta 4 para la proteina en el indice 3 [4to lugar])
         if (a != b) {
             matrizPeso[a-1][b-1] = peso;
             matrizPeso[b-1][a-1] = peso;
@@ -113,6 +113,7 @@ public class Grafo {
     
     public boolean estanConectadas (int i, int j){
         if (i < 0 || j < 0 || i>=cantidadProteinas || j>=cantidadProteinas) {
+            System.out.println("ADVERTENCIA: Insertaste una ubicacion negativa o una proteina fuera de la cantidad de proteinas maximas.");
             return false;
         }
         else {

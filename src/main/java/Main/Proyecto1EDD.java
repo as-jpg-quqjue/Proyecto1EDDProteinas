@@ -28,8 +28,11 @@ public class Proyecto1EDD {
         grafo.agregarConexión (3, 4, 16);
         grafo.agregarConexión(2, 4, 25);
         
-        grafo.imprimirMatrizPeso();
+        //grafo.imprimirMatrizPeso();
+        //grafo.getActivas();
         
         System.out.println(new CentralidadGrado(grafo).centralidad());
+        System.out.println(grafo.indexOf("b1"));
+        System.out.println(grafo.estanConectadas(0, 1));
     }
 }
