@@ -32,7 +32,9 @@ public class Proyecto1EDD {
         //grafo.getActivas();
         
         System.out.println(new CentralidadGrado(grafo).centralidad());
-        System.out.println(grafo.indexOf("b1"));
+        System.out.println(grafo.indexOf("a1"));
         System.out.println(grafo.estanConectadas(0, 1));
+        System.out.println(grafo.estanConectadas(0, 2));
+        System.out.println(grafo.estanConectadas(0, 3));
     }
 }
