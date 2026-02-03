@@ -117,7 +117,7 @@ public class Grafo {
             return false;
         }
         else {
-            return (i!=j && matrizPeso[i][j] != 0);
+            return (i!=j && matrizPeso[i][j] != 0); //retorna true si i es diferente de j y si el peso entre i y j son diferentes de 0
         }
     }
     
