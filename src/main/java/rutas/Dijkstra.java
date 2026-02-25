@@ -2,9 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package rutas;
+package main.java.rutas;
 
 import primitivas.Grafo;
+import main.java.Primitivas.Lista;
 
 /**
  *
@@ -111,5 +112,21 @@ public class Dijkstra {
         }
         System.out.println(indiceDistanciaMasCorta);
         return indiceDistanciaMasCorta;
+    }
+    
+    public Lista<Integer> obtenerCamino (int objetivo){ //he creado esta funcion a base de lo que esta pidiendo interfaz grafica
+        
+        Lista<Integer> camino = new Lista<>();
+        
+        if (this.distancias[objetivo] >= infinito){
+            return camino;
+        }
+        int nodoActual = objetivo; //vamos a ciclar por todo el codigo, caminando hacia atras siguiendo los pasos del grafo para hacer la lista
+        while (nodoActual != -1){ 
+            camino.insertar(nodoActual);
+            nodoActual = predecesores[nodoActual];
+        }
+        
+        return camino;
     }
 }

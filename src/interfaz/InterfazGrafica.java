@@ -9,12 +9,11 @@ package interfaz;
  * @author josep
  */
 import primitivas.Grafo;
-import buscadores.BFS;
-import buscadores.DFS;
+import main.java.buscadores.BFS;
 import buscadores.CentralidadGrado;
-import rutas.Dijkstra;
+import main.java.rutas.Dijkstra;
 import java.io.File;
-import java.util.List;
+import main.java.Primitivas.Lista;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -261,12 +260,12 @@ public class InterfazGrafica extends javax.swing.JPanel {
             int inicio = Integer.parseInt(origen);
             int fin = Integer.parseInt(destino);
             
-            Dijkstra dijkstra = new Dijkstra();
-            dijkstra.algoritmoDijkstra(grafo, inicio);
-            List<Integer> ruta = dijkstra.obtenerRuta(fin);
+            Dijkstra dijkstra = new Dijkstra(grafo, inicio);
+            dijkstra.algoritmoDijkstra(grafo, fin);
+            Lista <Integer> ruta = dijkstra.obtenerCamino(fin); //cambie la lista que utilizaste de java a la lista que creamos
             
             textArea1.setText("Ruta más corta desde " + inicio + " hasta " + fin + ":\n");
-            for(int nodo : ruta){
+            for(int nodo = 0; nodo < ruta.getiN(); nodo++){
                 textArea1.append("-> Nodo " + nodo + " (" + grafo.getNombres()[nodo] + ")\n");
             }
         } catch (Exception e) {
