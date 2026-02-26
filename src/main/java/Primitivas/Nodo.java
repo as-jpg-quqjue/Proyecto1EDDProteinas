@@ -5,7 +5,7 @@
 package main.java.Primitivas;
 
 /**
- *
+ *Es un nodo simple con dato y un puntero.
  * @author cesar
  * @param <T>
  */

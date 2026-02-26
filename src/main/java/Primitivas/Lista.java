@@ -5,7 +5,7 @@
 package main.java.Primitivas;
 
 /**
- *
+ *Es una lista primitiva simple con funciones de insertar y buscar posición.
  * @author cesar
  * @param <T>
  */

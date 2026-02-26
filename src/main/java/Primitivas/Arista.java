@@ -5,7 +5,7 @@
 package primitivas;
 
 /**
- *
+ *Sirve como camino u conexión entre los elementos, se le otorga a la proteina, teniendo una proteína destino y peso.
  * @author cesar
  */
 public class Arista {

@@ -4,7 +4,9 @@
  */
 package primitivas;
 /**
- *
+ *Este la clase grafo, representa las proteínas, con sus nombres, si están presentes y sus conexiones 
+ * con sus pesos (-10 en el caso de que no haya conexion); funciona como una Matriz de adyasencia de 
+ * relación simetrica e irreflexiva.
  * @author cesar
  */
 public class Grafo {
@@ -20,28 +22,32 @@ public class Grafo {
             matrizPeso = new int[cantidadInicial][cantidadInicial];
             cantidadProteinas = 0;
         }
+        this.iniciarMatriz(0, cantidadInicial);
     }
     
     /** 
-    Inicia la matriz, asigna cero si no hay conexión y asigna 9999 si hay conexión.
+    *Inicia la matriz, asigna -10 a cada conexion.
     */
     public void iniciarMatriz(int desde, int hasta){
         for (int i = desde; i < hasta; i++) {
             for (int j = 0; j < hasta; j++) {
-                matrizPeso[i][j] = 9999;
+                matrizPeso[i][j] = -10;
             }
         }
         for (int i = 0; i <hasta; i++) {
             for (int j = desde; j < hasta; j++) {
-                matrizPeso[i][j] = 9999;
+                matrizPeso[i][j] = -10;
             }
         }
         for (int i = 0; i < hasta; i++) {
-            matrizPeso[i][i] = 9999;
+            matrizPeso[i][i] = -10;
         }
 
     }
     
+    /** 
+    * Agrega una proteina, se necesita el nombre; las conexiones se asignan en otra función.
+    */
     public int agregarProteina (String nombre){
         int i = indexOf(nombre);
         if (i != -1) {
@@ -53,26 +59,33 @@ public class Grafo {
         activas[cantidadProteinas] = true;
         return cantidadProteinas++;
     }
-    
-    public void agregarConexión (int a, int b, int peso){
-           //COMENTARIO: se insertan los datos de las posiciones contando desde 1, no desde 0 (se inserta 4 para la proteina en el indice 3 [4to lugar])
-        if (a != b) {
-            matrizPeso[a-1][b-1] = peso;
-            matrizPeso[b-1][a-1] = peso;
+    /** 
+    * Agrega una conexión entre proteínas de forma bilateral, es necesario saber el nombre de las proteinas a conectar.
+    */
+    public void agregarConexión (String a, String b, int peso){
+        int ia = agregarProteina(a);
+        int ib = agregarProteina(b);
+        if (ia != ib) {
+            matrizPeso[ia][ib] = peso;
+            matrizPeso[ib][ia] = peso;
         }
     }
-    
+    /** 
+    * Remueve una proteina, se debe dar el nombre.
+    */
     public void removerProteina (String nombre){
         int i = indexOf(nombre);
         if (i != -1) {
             activas[i] = false;
             for (int j = 0; j < cantidadProteinas; j++) {
-                matrizPeso[i][j] = 9999;
-                matrizPeso[j][i] = 9999;
+                matrizPeso[i][j] = -10;
+                matrizPeso[j][i] = -10;
             }
         }
     }
-    
+    /** 
+    * Es el buscador de proteina, lo busca dentro de la lista nombres y otorga el numero de la posición.
+    */
     public int indexOf (String nombre){
         for (int i = 0; i < cantidadProteinas; i++) {
             if (nombres[i].equals(nombre)) {
@@ -82,6 +95,9 @@ public class Grafo {
         return -1;
     }
     
+    /** 
+    * Debido que la matriz funciona a base de arrays, esta funcion evita que colpase.
+    */
     public void garantizarCapacidad(int min){
         if (min <= nombres.length) return;
         int nuevaCapa = nombres.length*2;
@@ -98,7 +114,7 @@ public class Grafo {
         }
         for (int i = 0; i < nuevaCapa; i++) {
             for (int j = 0; j < nuevaCapa; j++) {
-                nuevaMatrizPeso[i][j] = 9999;
+                nuevaMatrizPeso[i][j] = -10;
             }
         }
         for (int i = 0; i < cantidadProteinas; i++) {
@@ -111,16 +127,22 @@ public class Grafo {
         matrizPeso = nuevaMatrizPeso;
     }
     
+    /** 
+    * Devuelve un booleano, verifica que las proteinas estan conectadas.
+    */
     public boolean estanConectadas (int i, int j){
         if (i < 0 || j < 0 || i>=cantidadProteinas || j>=cantidadProteinas) {
-            System.out.println("ADVERTENCIA: Insertaste una ubicacion negativa o una proteina fuera de la cantidad de proteinas maximas.");
             return false;
         }
         else {
-            return (i!=j && matrizPeso[i][j] != 0); //retorna true si i es diferente de j y si el peso entre i y j son diferentes de 0
+            //El numero que afirma que no estan conectadas por predeterminado es -10
+            return (i!=j && matrizPeso[i][j] != -10);
         }
     }
     
+    /** 
+    * Imprime la MatrizPeso (sin nombres).
+    */
     public void imprimirMatrizPeso (){
         for (int i = 0; i < cantidadProteinas; i++) {
             for (int j = 0; j < cantidadProteinas; j++) {
