@@ -42,6 +42,7 @@ public class Grafo {
 
     }
     
+    //esta funcion recibe un nombre y agrega una proteina con ese nombre, retornando la cantidad nueva de proteinas
     public int agregarProteina (String nombre){
         int i = indexOf(nombre);
         if (i != -1) {
@@ -74,6 +75,7 @@ public class Grafo {
         }
     }
     
+    //este procedimiento recibe el string nombre y la busca en el grafo, si existe, la desactiva y pone el peso en 9999
     public void removerProteina (String nombre){
         int i = indexOf(nombre);
         if (i != -1) {
@@ -85,6 +87,7 @@ public class Grafo {
         }
     }
     
+    //esta funcion recibe el nombre de una proteina y la busca hasta conseguirla, sino, retorna -1 como marcador de que no esta
     public int indexOf (String nombre){
         for (int i = 0; i < cantidadProteinas; i++) {
             if (nombres[i].equals(nombre)) {
@@ -93,7 +96,7 @@ public class Grafo {
         }
         return -1;
     }
-    
+    //AÑADIR DOCUMENTACION DE QUE HACE ESTE PROCEDIMIENTO
     public void garantizarCapacidad(int min){
         if (min <= nombres.length) return;
         int nuevaCapa = nombres.length*2;
@@ -123,6 +126,7 @@ public class Grafo {
         matrizPeso = nuevaMatrizPeso;
     }
     
+    //esta funcion recibe dos ints que actuan como posiciones de dos proteinas, y prueba si su peso de matriz es diferente de 0
     public boolean estanConectadas (int i, int j){
         if (i < 0 || j < 0 || i>=cantidadProteinas || j>=cantidadProteinas) {
             System.out.println("ADVERTENCIA: Insertaste una ubicacion negativa o una proteina fuera de la cantidad de proteinas maximas.");
@@ -133,6 +137,7 @@ public class Grafo {
         }
     }
     
+    //este procedimiento imprime el peso registrado en todas las proteinas en la matriz
     public void imprimirMatrizPeso (){
         for (int i = 0; i < cantidadProteinas; i++) {
             for (int j = 0; j < cantidadProteinas; j++) {
@@ -142,19 +147,23 @@ public class Grafo {
         }
         
     }
-
+    
+    //esta funcion retorna un array con todos los nombres del grafo
     public String[] getNombres() {
         return nombres;
     }
-
+    
+    //esta funcion retorna un array con todos los activos del grafo
     public boolean[] getActivas() {
         return activas;
     }
-
+    
+    //esta funcion retorna una matriz con todos los pesos del grafo
     public int[][] getMatrizPeso() {
         return matrizPeso;
     }
-
+    
+    //esta funcion retorna un int que es la cantidad de proteinas del grafo
     public int getCantidadProteinas() {
         return cantidadProteinas;
     }

@@ -11,6 +11,7 @@ import main.java.Primitivas.Grafo;
  * @author cesar
  */
 public class DFS {
+    //AÑADIR DOCUMENTACION DE QUE HACE ESTE PROCEDIMIENTO
     public int [] dfsComponente (int inicio, Grafo grafo){
         if (grafo.getCantidadProteinas() > 0 && inicio > 0 && inicio <= grafo.getCantidadProteinas()) {
             
