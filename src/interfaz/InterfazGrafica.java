@@ -8,9 +8,9 @@ package interfaz;
  *
  * @author josep
  */
-import primitivas.Grafo;
+import main.java.Primitivas.Grafo;
 import main.java.buscadores.BFS;
-import buscadores.CentralidadGrado;
+import main.java.buscadores.CentralidadGrado;
 import main.java.rutas.Dijkstra;
 import java.io.File;
 import main.java.Primitivas.Lista;
@@ -281,7 +281,7 @@ public class InterfazGrafica extends javax.swing.JPanel {
         }
         
         CentralidadGrado cg = new CentralidadGrado(grafo);
-        int mejorProteinaIndex = cg.centralidad();
+        int mejorProteinaIndex = cg.centralidadPosicion();
         if (mejorProteinaIndex != -1) {
             String nombreMejor = grafo.getNombres()[mejorProteinaIndex];
             int cantidadConexiones = cg.grado(mejorProteinaIndex, grafo.getCantidadProteinas());

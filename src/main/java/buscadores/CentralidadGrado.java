@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package buscadores;
+package main.java.buscadores;
 
-import primitivas.Grafo;
+import main.java.Primitivas.Grafo;
 
 /**
  *Busca la proteina con mayor cantidad de conexiones.

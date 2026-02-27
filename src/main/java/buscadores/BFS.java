@@ -4,7 +4,7 @@
  */
 package main.java.buscadores;
 
-import primitivas.Grafo;
+import main.java.Primitivas.Grafo;
 
 /**
  *

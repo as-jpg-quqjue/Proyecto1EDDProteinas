@@ -4,7 +4,7 @@
  */
 package main.java.rutas;
 
-import primitivas.Grafo;
+import main.java.Primitivas.Grafo;
 import main.java.Primitivas.Lista;
 
 /**
@@ -89,7 +89,7 @@ public class Dijkstra {
                    
                    int peso = grafo.getMatrizPeso()[nodoActual][anterior]; //definimos el peso como una variable para ahorrar el tiempo de escribir esto otra y otra vez
                    
-                   ruta.agregarConexión(indiceNodoActual+1, indiceAnterior+1, peso); 
+                   ruta.agregarConexiónInt(indiceNodoActual+1, indiceAnterior+1, peso); //
                    
                    nodoActual = anterior;
                }
