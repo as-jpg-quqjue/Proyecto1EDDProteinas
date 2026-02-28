@@ -13,6 +13,7 @@ import main.java.buscadores.BFS;
 import main.java.buscadores.CentralidadGrado;
 import main.java.rutas.Dijkstra;
 import java.io.File;
+import java.io.IOException;
 import main.java.Primitivas.Lista;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -22,11 +23,12 @@ public class InterfazGrafica extends javax.swing.JPanel {
     
     // VARIABLE GLOBAL PARA MANTENER EL GRAFO EN MEMORIA
     private Grafo grafo; 
+    private GuardadoCSV gargar = new GuardadoCSV();
 
     public InterfazGrafica() {
         initComponents();
         // Inicializamos un grafo vacío por defecto
-        grafo = new Grafo(10); 
+        grafo = new Grafo(2);
     }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -211,6 +213,11 @@ public class InterfazGrafica extends javax.swing.JPanel {
         if (seleccion == JFileChooser.APPROVE_OPTION) {
             File archivoSeleccionado = fileChooser.getSelectedFile();
             textArea1.setText("Archivo seleccionado:\n" + archivoSeleccionado.getAbsolutePath() + "\n\n");
+            try {
+                grafo = gargar.cargarGrafo(archivoSeleccionado);
+            } catch (IOException ex) {
+                System.getLogger(InterfazGrafica.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
     }//GEN-LAST:event_jButton4ActionPerformed
     }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -218,6 +225,11 @@ public class InterfazGrafica extends javax.swing.JPanel {
         // Tienes que recorrer la matriz de tu 'grafo', y si hay conexión, escribir en el TXT:
         // Origen, Destino, Peso
         textArea1.append("Debes usar un FileWriter para guardar el grafo de memoria al TXT.");
+        try {
+            System.out.println(gargar.guardar(grafo));
+        } catch (IOException ex) {
+            System.getLogger(InterfazGrafica.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
     
     }//GEN-LAST:event_jButton1ActionPerformed
 

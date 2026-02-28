@@ -20,6 +20,7 @@ public class Grafo {
             matrizPeso = new int[cantidadInicial][cantidadInicial];
             cantidadProteinas = 0;
         }
+        iniciarMatriz(0,cantidadInicial);
     }
     
     /** 
@@ -129,11 +130,15 @@ public class Grafo {
             return false;
         }
         else {
-            return (i!=j && matrizPeso[i][j] != 0); //retorna true si i es diferente de j y si el peso entre i y j son diferentes de 0
+            return (i!=j && matrizPeso[i][j] != 9999); //retorna true si i es diferente de j y si el peso entre i y j son diferentes de 9999
         }
     }
     
     public void imprimirMatrizPeso (){
+        for (int i = 0; i < cantidadProteinas; i++) {
+            System.out.print(nombres[i] + " ");
+        }
+        System.out.println("");
         for (int i = 0; i < cantidadProteinas; i++) {
             for (int j = 0; j < cantidadProteinas; j++) {
                 System.out.print(matrizPeso[i][j]+ " ");
