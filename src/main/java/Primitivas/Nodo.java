@@ -18,19 +18,19 @@ public class Nodo<T> {
         this.pSig = null;
     }
 
-    public T getDato() {
+    public T getDato() { //esta funcion retorna el dato guardado dentro del nodo
         return dato;
     }
 
-    public void setDato(T dato) {
+    public void setDato(T dato) { //este procedimiento reemplaza el dato dentro del nodo
         this.dato = dato;
     }
 
-    public Nodo<T> getpSig() {
+    public Nodo<T> getpSig() { //esta funcion retorna el psiguiente de un nodo de cualquier tipo
         return pSig;
     }
 
-    public void setpSig(Nodo<T> pSig) {
+    public void setpSig(Nodo<T> pSig) { //este procedimiento asigna un nodo de cualquier tipo como el psiguiente
         this.pSig = pSig;
     }
     

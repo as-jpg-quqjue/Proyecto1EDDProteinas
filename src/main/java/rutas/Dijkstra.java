@@ -31,7 +31,8 @@ public class Dijkstra {
             this.predecesores[i] = -1; //aqui NO se usa infinito, se usa -1 porque esto es para indices
         }
         this.distancias[inicio] = 0; //se define la distancia del nodo de inicio como 0
-    } 
+    }
+    //esta es la funcion mas importante de la clase dijkstra, recibe un grafo y un int como objetivo, y va iterando mediante el metodo dijkstra por el grafo hasta conseguir el objetivo
     public Grafo algoritmoDijkstra(Grafo grafo, int objetivo)
     {
         int cantidadNodos = grafo.getCantidadProteinas();
@@ -98,6 +99,7 @@ public class Dijkstra {
         }
     }
     
+    //esta funcion es el corazon del dijkstra, se busca la distancia mas corta desde el nodo inicial hasta el final, actualizando distancias[n] y retornando un int que es el indice de la distancia mas corta para continuar, si existe. si no existe se retorna -1
     private int encontrarNodoMasCorto(){
         int distanciaMasCorta = infinito; //se define un valor que sirve como comparaci�n, todos los nodos validos tienen que ser menores o iguales a este valor [n = Nodo]
         int indiceDistanciaMasCorta = -1; //se mantiene grabada el indice del nodo con la conexi�n mas corta
@@ -114,14 +116,15 @@ public class Dijkstra {
         return indiceDistanciaMasCorta;
     }
     
-    public Lista<Integer> obtenerCamino (int objetivo){ //he creado esta funcion a base de lo que esta pidiendo interfaz grafica
-        
+    //esta funcion recibe el int objetivo, y busca en las distancias de la clase dijkstra para convertirlas en una lista
+    public Lista<Integer> obtenerCamino (int objetivo){ 
+        //he creado esta funcion a base de lo que esta pidiendo interfaz grafica
         Lista<Integer> camino = new Lista<>();
         
         if (this.distancias[objetivo] >= infinito){
             return camino;
         }
-        int nodoActual = objetivo; //vamos a ciclar por todo el codigo, caminando hacia atras siguiendo los pasos del grafo para hacer la lista
+        int nodoActual = objetivo; //se cicla por todo el grafo, caminando hacia atras siguiendo los pasos del predecesores para hacer la lista
         while (nodoActual != -1){ 
             camino.insertar(nodoActual);
             nodoActual = predecesores[nodoActual];
