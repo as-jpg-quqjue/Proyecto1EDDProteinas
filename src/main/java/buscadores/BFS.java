@@ -1,50 +1,51 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package main.java.buscadores;
 
 import main.java.Primitivas.Grafo;
 
 /**
- *
+ * 
  * @author cesar
  */
 public class BFS {
-    //AÑADIR DOCUMENTACION DE QUE HACE ESTE PROCEDIMIENTO
-    public int[] bfsComponente (int inicio, Grafo grafo){
-        if (grafo.getCantidadProteinas() > 0 && inicio > 0 && inicio <= grafo.getCantidadProteinas()) {
+    
+    /**
+     * Encuentra todos los nodos en el componente conexo desde un nodo inicial.
+     * @param inicio Índice del nodo de inicio
+     * @param grafo El grafo a recorrer
+     * @return Array con los índices de los nodos en el componente
+     */
+    public int[] bfsComponente(int inicio, Grafo grafo) {
+        int n = grafo.getCantidadProteinas();
+        
+        if (n == 0 || inicio < 0 || inicio >= n) {
+            return new int[0];
+        }
+        
+        boolean[] visitadas = new boolean[n];
+        int[] resultado = new int[n];
+        int[] cola = new int[n];
+        int cabeza = 0, colaIdx = 0, k = 0;
+        
+        visitadas[inicio] = true;
+        cola[colaIdx++] = inicio;
+        
+        while (cabeza < colaIdx) {
+            int i = cola[cabeza++];
             
-            boolean [] visitadas = new boolean [grafo.getCantidadProteinas()];
-            int [] arreglo = new int [grafo.getCantidadProteinas()];
-            int [] arregloAux = new int [grafo.getCantidadProteinas()];
-            int cabeza = 0;
-            int cola = 0;
-            int k = 0;
+            if (grafo.getActivas()[i]) {
+                resultado[k++] = i;
+            }
             
-            visitadas[inicio] = true;
-            arreglo[cola++] = inicio;
-            
-            while (cabeza < cola){
-                int i = arreglo[cabeza++];
-                arregloAux [k++] = i;
-                for (int j = 0; j < grafo.getCantidadProteinas(); j++) {
-                    if (!visitadas[j] && grafo.estanConectadas(i, j)) {
-                        visitadas[i] = true;
-                        arreglo[cola++] = i;
-                    } else if (!grafo.getActivas()[j]) {
-                        continue;
-                    }
+            for (int j = 0; j < n; j++) {
+                if (!visitadas[j] && grafo.getActivas()[j] && grafo.estanConectadas(i, j)) {
+                    visitadas[j] = true;  // ✅ CORREGIDO: j en lugar de i
+                    cola[colaIdx++] = j;  // ✅ CORREGIDO: j en lugar de i
                 }
             }
-            int [] salida = new int [k];
-            for (int i = 0; i < k; i++) {
-                salida[i] = arregloAux[i];
-                
-            }
-            return salida;
-            
         }
-        return new int[0];
+        
+        int[] salida = new int[k];
+        System.arraycopy(resultado, 0, salida, 0, k);
+        return salida;
     }
 }

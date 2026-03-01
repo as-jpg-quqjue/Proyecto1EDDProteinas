@@ -8,6 +8,7 @@ package interfaz;
  *
  * @author josep
  */
+
 import main.java.Primitivas.Grafo;
 import main.java.buscadores.BFS;
 import main.java.buscadores.CentralidadGrado;
@@ -18,17 +19,30 @@ import main.java.Primitivas.Lista;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.JDialog;  
+import java.awt.Frame;      
 
 public class InterfazGrafica extends javax.swing.JPanel {
     
-    // VARIABLE GLOBAL PARA MANTENER EL GRAFO EN MEMORIA
-    private Grafo grafo; 
     private GuardadoCSV gargar = new GuardadoCSV();
-
+    
+    private Grafo grafo;
+    private GuardadoCSV guardadoCSV;
+    private PanelVisualizacionGrafo panelVisualizacion;
+    private JDialog dialogVisualizacion;
+    
     public InterfazGrafica() {
         initComponents();
         // Inicializamos un grafo vacío por defecto
         grafo = new Grafo(2);
+        guardadoCSV = new GuardadoCSV();
+        panelVisualizacion = new PanelVisualizacionGrafo();
+        
+        // Configurar dialog para visualización
+        dialogVisualizacion = new JDialog((Frame) null, "Visualización del Grafo", true);
+        dialogVisualizacion.setSize(800, 600);
+        dialogVisualizacion.setLocationRelativeTo(this);
+        dialogVisualizacion.add(panelVisualizacion);
     }
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -42,7 +56,8 @@ public class InterfazGrafica extends javax.swing.JPanel {
         jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        textArea1 = new java.awt.TextArea();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
 
         jPanel1.setBackground(new java.awt.Color(204, 255, 255));
 
@@ -106,37 +121,37 @@ public class InterfazGrafica extends javax.swing.JPanel {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
         jLabel1.setText("BioGraph - Analisis de Interacciones Proteicas");
 
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton5)
-                    .addComponent(jButton6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton3)
-                        .addContainerGap())))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton5)
+                            .addComponent(jButton6))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(57, 57, 57)
                         .addComponent(jLabel1)
-                        .addGap(0, 65, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 94, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jButton4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(textArea1, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(204, 204, 204)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton7)))
                 .addContainerGap())
@@ -164,8 +179,8 @@ public class InterfazGrafica extends javax.swing.JPanel {
                         .addComponent(jButton7)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                        .addComponent(textArea1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
         );
 
@@ -182,129 +197,286 @@ public class InterfazGrafica extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-       String[] opciones = {"Agregar Proteína", "Eliminar Proteína"};
-        int seleccion = JOptionPane.showOptionDialog(this, "¿Qué deseas hacer?", "Modificar Grafo", 
-                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[0]);
+       if (grafo == null || grafo.getCantidadProteinas() == 0) {
+            jTextArea1.setText("❌ No hay grafo cargado.");
+            return;
+        }
         
-        if (seleccion == 0) { // Agregar
-            String nombre = JOptionPane.showInputDialog("Nombre de la nueva proteína:");
-            if(nombre != null && !nombre.trim().isEmpty()){
-                grafo.agregarProteina(nombre);
-                textArea1.setText("Proteína '" + nombre + "' agregada con éxito.");
+        String[] opciones = {"Agregar Proteína", "Eliminar Proteína", "Agregar Conexión"};
+        int seleccion = JOptionPane.showOptionDialog(this,
+            "¿Qué deseas hacer?",
+            "Modificar Grafo",
+            JOptionPane.DEFAULT_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            opciones,
+             opciones[0]);
+        
+        if (seleccion == 0) { // Agregar Proteína
+            String nombre = JOptionPane.showInputDialog(this, "Nombre de la nueva proteína:");
+            if (nombre != null && !nombre.trim().isEmpty()) {
+                grafo.agregarProteina(nombre.trim());
+                jTextArea1.setText("✅ Proteína '" + nombre + "' agregada con éxito.");
             }
-        } else if (seleccion == 1) { // Eliminar
-            String nombre = JOptionPane.showInputDialog("Nombre de la proteína a eliminar:");
-            if(nombre != null && !nombre.trim().isEmpty()){
-                grafo.removerProteina(nombre);
-                textArea1.setText("Proteína '" + nombre + "' ha sido desactivada/eliminada.");
+        } else if (seleccion == 1) { // Eliminar Proteína
+            String nombre = JOptionPane.showInputDialog(this, "Nombre de la proteína a eliminar:");
+            if (nombre != null && !nombre.trim().isEmpty()) {
+                grafo.removerProteina(nombre.trim());
+                jTextArea1.setText("✅ Proteína '" + nombre + "' ha sido desactivada.");
+            }
+        } else if (seleccion == 2) { // Agregar Conexión
+            String origen = JOptionPane.showInputDialog(this, "Proteína Origen:");
+            String destino = JOptionPane.showInputDialog(this, "Proteína Destino:");
+            String pesoStr = JOptionPane.showInputDialog(this, "Peso/Costo de la conexión:");
+            if (origen != null && destino != null && pesoStr != null) {
+                try {
+                    int peso = Integer.parseInt(pesoStr.trim());
+                    grafo.agregarConexión(origen.trim(), destino.trim(), peso);
+                    jTextArea1.setText("✅ Conexión agregada: " + origen + " ↔ " + destino + 
+                                     " (peso: " + peso + ")");
+                } catch (NumberFormatException e) {
+                    jTextArea1.setText("❌ Error: El peso debe ser un número entero.");
+                    JOptionPane.showMessageDialog(this,
+                        "El peso debe ser un número válido.",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                }
             }
         }
-    
+        
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        JOptionPane.showMessageDialog(this, "Recuerda guardar los datos actuales en el repositorio antes de cargar un archivo nuevo.", "Aviso", JOptionPane.WARNING_MESSAGE);
+        if (grafo != null && grafo.getCantidadProteinas() > 0) {
+        int confirmacion = JOptionPane.showConfirmDialog(this,
+            "¿Deseas guardar los cambios antes de cargar un nuevo archivo?",
+            "Guardar Cambios",
+            JOptionPane.YES_NO_CANCEL_OPTION,
+            JOptionPane.QUESTION_MESSAGE);
         
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos de texto o CSV", "txt", "csv"));
-        
-        int seleccion = fileChooser.showOpenDialog(this);
-        
-        if (seleccion == JFileChooser.APPROVE_OPTION) {
-            File archivoSeleccionado = fileChooser.getSelectedFile();
-            textArea1.setText("Archivo seleccionado:\n" + archivoSeleccionado.getAbsolutePath() + "\n\n");
-            try {
-                grafo = gargar.cargarGrafo(archivoSeleccionado);
-            } catch (IOException ex) {
-                System.getLogger(InterfazGrafica.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-            }
-    }//GEN-LAST:event_jButton4ActionPerformed
-    }
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-      textArea1.setText("Iniciando guardado...\n");
-        // Tienes que recorrer la matriz de tu 'grafo', y si hay conexión, escribir en el TXT:
-        // Origen, Destino, Peso
-        textArea1.append("Debes usar un FileWriter para guardar el grafo de memoria al TXT.");
-        try {
-            System.out.println(gargar.guardar(grafo));
-        } catch (IOException ex) {
-            System.getLogger(InterfazGrafica.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            jButton1ActionPerformed(evt); // Llamar al método de guardar
+        } else if (confirmacion == JOptionPane.CANCEL_OPTION) {
+            return; // Cancelar la carga
         }
+    }
+        JFileChooser fileChooser = new JFileChooser();
+    fileChooser.setFileFilter(new FileNameExtensionFilter("Archivos CSV o TXT", "csv", "txt"));
+    fileChooser.setAcceptAllFileFilterUsed(false);
     
+    int seleccion = fileChooser.showOpenDialog(this);
+    
+    if (seleccion == JFileChooser.APPROVE_OPTION) {
+        File archivoSeleccionado = fileChooser.getSelectedFile();
+        
+            try {
+            // Cargar el grafo
+            grafo = gargar.cargarGrafo(archivoSeleccionado);
+            
+            // ✅ Mostrar mensaje de éxito en la interfaz
+            jTextArea1.setText("✅ Archivo cargado exitosamente:\n" + 
+                             archivoSeleccionado.getName() + "\n\n" +
+                             "Proteínas cargadas: " + grafo.getCantidadProteinas() + "\n" +
+                             "Ubicación: " + archivoSeleccionado.getAbsolutePath());
+            
+            JOptionPane.showMessageDialog(this, 
+                "✅ Archivo cargado: " + archivoSeleccionado.getName() + 
+                "\nProteínas: " + grafo.getCantidadProteinas(), 
+                "Carga Exitosa", 
+                JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException ex) {
+            // ✅ Mostrar error visible al usuario
+            jTextArea1.setText("❌ Error al cargar el archivo:\n" + ex.getMessage());
+            JOptionPane.showMessageDialog(this,
+                "Error al cargar: " + ex.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        } catch (Exception ex) {
+            // ✅ Capturar cualquier otro error inesperado
+            jTextArea1.setText("❌ Error inesperado: " + ex.getMessage());
+            JOptionPane.showMessageDialog(this,
+                "Error inesperado: " + ex.getMessage(),
+                "Error Crítico",
+                JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+        }
+    }
+
+    }//GEN-LAST:event_jButton4ActionPerformed
+    
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+      if (grafo == null || grafo.getCantidadProteinas() == 0) {
+            jTextArea1.setText("❌ No hay grafo en memoria para guardar.");
+            JOptionPane.showMessageDialog(this,
+                "No hay datos para guardar.",
+                "Advertencia",
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        try {
+            String mensaje = guardadoCSV.guardar(grafo);
+            jTextArea1.setText("✅ " + mensaje);
+            JOptionPane.showMessageDialog(this, mensaje, "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        } catch (IOException ex) {
+            jTextArea1.setText("❌ Error al guardar: " + ex.getMessage());
+            JOptionPane.showMessageDialog(this,
+                "Error al guardar: " + ex.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-       textArea1.setText("Para visualizar el grafo, aquí debes invocar tu código de GraphStream.\n");
-        // Aquí deberás crear tu org.graphstream.graph.Graph, pasarle los nodos y aristas 
-    
+     if (grafo == null || grafo.getCantidadProteinas() == 0) {
+            jTextArea1.setText("❌ No hay grafo cargado. Carga un archivo primero.");
+            JOptionPane.showMessageDialog(this,
+                "No hay grafo cargado.",
+                "Advertencia",
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        // Limpiar panel anterior
+        panelVisualizacion.liberarRecursos();
+        panelVisualizacion.removeAll();
+        
+        // Visualizar nuevo grafo
+        panelVisualizacion.visualizarGrafo(grafo);
+        // Mostrar dialog
+        dialogVisualizacion.setVisible(true);
+        
+        jTextArea1.setText("✅ Grafo visualizado correctamente.\n" +
+                         "Proteínas activas: " + grafo.getCantidadProteinas() + "\n" +
+                         "Los nodos rojos representan Hubs (≥5 conexiones)");
+        
     }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if (grafo.getCantidadProteinas() == 0) {
-            textArea1.setText("El grafo está vacío. Carga un archivo primero.");
+       if (grafo == null || grafo.getCantidadProteinas() == 0) {
+            jTextArea1.setText("❌ El grafo está vacío. Carga un archivo primero.");
             return;
         }
         
-        textArea1.setText("--- Detectando Complejos (BFS) ---\n");
-        BFS buscador = new BFS();
+        String nombreInicio = JOptionPane.showInputDialog(this,
+            "Nombre de la proteína para iniciar BFS:");
         
-       int[] resultado = buscador.bfsComponente(0, grafo);
-        
-        textArea1.append("Nodos en el componente partiendo del índice 0:\n");
-        for (int i = 0; i < resultado.length; i++) {
-            // Buscamos el nombre de la proteína en ese índice
-            String nombre = grafo.getNombres()[resultado[i]];
-            textArea1.append("- " + nombre + "\n");
+        if (nombreInicio == null || nombreInicio.trim().isEmpty()) {
+            return;
         }
-    
+        
+        int inicio = grafo.indexOf(nombreInicio.trim());
+        
+        if (inicio == -1) {
+            jTextArea1.setText("❌ La proteína '" + nombreInicio + "' no existe en el grafo.");
+            JOptionPane.showMessageDialog(this,
+                "Proteína no encontrada.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+            return;
+            }
+        
+        BFS buscador = new BFS();
+        int[] resultado = buscador.bfsComponente(inicio, grafo);
+        
+        jTextArea1.setText("🔍 Complejos Proteicos Detectados (BFS)\n");
+        jTextArea1.append("========================================\n");
+        jTextArea1.append("Proteína inicial: " + nombreInicio + "\n");
+        jTextArea1.append("Proteínas en el componente: " + resultado.length + "\n\n");
+        
+        for (int i = 0; i < resultado.length; i++) {
+            jTextArea1.append((i+1) + ". " + grafo.getNombres()[resultado[i]] + "\n");
+        }
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        if (grafo.getCantidadProteinas() < 2) {
-            textArea1.setText("No hay suficientes proteínas para calcular rutas.");
+        if (grafo == null || grafo.getCantidadProteinas() < 2) {
+            jTextArea1.setText("❌ No hay suficientes proteínas para calcular rutas.");
             return;
         }
-        // Pedimos los índices (o puedes modificarlo para pedir nombres)
+        
+        String origen = JOptionPane.showInputDialog(this, "Nombre de la Proteína de Origen:");
+        String destino = JOptionPane.showInputDialog(this, "Nombre de la Proteína de Destino:");
+        
+        if (origen == null || destino == null || origen.trim().isEmpty() || destino.trim().isEmpty()) {
+            jTextArea1.setText("❌ Entrada inválida.");
+            return;
+        }
+        int inicio = grafo.indexOf(origen.trim());
+        int fin = grafo.indexOf(destino.trim());
+        
+        if (inicio == -1 || fin == -1) {
+            jTextArea1.setText("❌ Una o ambas proteínas no existen en el grafo.");
+            JOptionPane.showMessageDialog(this,
+                "Proteína no encontrada.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        if (inicio == fin) {
+            jTextArea1.setText("❌ El origen y destino son la misma proteína.");
+            return;
+        }
         try {
-            String origen = JOptionPane.showInputDialog("Índice o Nombre de la Proteína de Origen:");
-            String destino = JOptionPane.showInputDialog("Índice o Nombre de la Proteína de Destino:");
-            
-            int inicio = Integer.parseInt(origen);
-            int fin = Integer.parseInt(destino);
-            
             Dijkstra dijkstra = new Dijkstra(grafo, inicio);
             dijkstra.algoritmoDijkstra(grafo, fin);
-            Lista <Integer> ruta = dijkstra.obtenerCamino(fin); //cambie la lista que utilizaste de java a la lista que creamos
+            Lista<Integer> ruta = dijkstra.obtenerCamino(fin);
             
-            textArea1.setText("Ruta más corta desde " + inicio + " hasta " + fin + ":\n");
-            for(int nodo = 0; nodo < ruta.getiN(); nodo++){
-                textArea1.append("-> Nodo " + nodo + " (" + grafo.getNombres()[nodo] + ")\n");
+            jTextArea1.setText("🛤️ Ruta Metabólica Más Corta\n");
+            jTextArea1.append("========================================\n");
+            jTextArea1.append("Origen: " + origen + " → Destino: " + destino + "\n");
+            jTextArea1.append("Costo total: " + dijkstra.getDistancia(fin) + "\n\n");
+            jTextArea1.append("Secuencia de proteínas:\n");
+            
+            // La lista viene en orden inverso (destino → origen), hay que invertirla
+            for (int i = ruta.getiN() - 1; i >= 0; i--) {
+                int nodo = ruta.buscarPosición(i);
+                jTextArea1.append("   → " + grafo.getNombres()[nodo] + "\n");
             }
-        } catch (Exception e) {
-            textArea1.setText("Error: Por favor introduce índices válidos.");
+            } catch (Exception e) {
+            jTextArea1.setText("❌ Error al calcular ruta: " + e.getMessage());
+            JOptionPane.showMessageDialog(this,
+                "Error: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
         }
+            
     
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-     if (grafo.getCantidadProteinas() == 0) {
-            textArea1.setText("El grafo está vacío.");
+     if (grafo == null || grafo.getCantidadProteinas() == 0) {
+            jTextArea1.setText("❌ El grafo está vacío.");
             return;
         }
         
         CentralidadGrado cg = new CentralidadGrado(grafo);
         int mejorProteinaIndex = cg.centralidadPosicion();
+        
         if (mejorProteinaIndex != -1) {
             String nombreMejor = grafo.getNombres()[mejorProteinaIndex];
             int cantidadConexiones = cg.grado(mejorProteinaIndex, grafo.getCantidadProteinas());
             
-            textArea1.setText("--- Principal Hub Detectado ---\n");
-            textArea1.append("Proteína más esencial: " + nombreMejor + "\n");
-            textArea1.append("Cantidad de interacciones: " + cantidadConexiones + "\n");
-            textArea1.append("Índice en memoria: " + mejorProteinaIndex);
+            jTextArea1.setText("🎯 Identificación de Hubs (Centralidad de Grado)\n");
+            jTextArea1.append("========================================\n");
+            jTextArea1.append("Proteína más esencial (Hub): " + nombreMejor + "\n");
+            jTextArea1.append("Cantidad de interacciones: " + cantidadConexiones + "\n");
+            jTextArea1.append("Índice en memoria: " + mejorProteinaIndex + "\n\n");
+            jTextArea1.append("💡 Esta proteína es una diana terapéutica primaria.\n");
+            jTextArea1.append("   Si es anulada, podría mitigar el efecto del patógeno.");
+            
+            JOptionPane.showMessageDialog(this,
+                "Hub identificado: " + nombreMejor + "\n" +
+                "Conexiones: " + cantidadConexiones,
+                "Hub Detectado",
+                JOptionPane.INFORMATION_MESSAGE);
         } else {
-            textArea1.setText("No se pudo identificar ningún Hub.");
+            jTextArea1.setText("❌ No se pudo identificar ningún Hub.");
         }
+        
     
     }//GEN-LAST:event_jButton7ActionPerformed
 
@@ -319,6 +491,7 @@ public class InterfazGrafica extends javax.swing.JPanel {
     private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private java.awt.TextArea textArea1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
 }
