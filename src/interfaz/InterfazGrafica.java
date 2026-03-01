@@ -284,8 +284,10 @@ public class InterfazGrafica extends javax.swing.JPanel {
                 if (origen != null && destino != null && pesoStr != null && !origen.equals(destino)) {
                     try {
                         int peso = Integer.parseInt(pesoStr.trim());
-                        grafo.agregarConexión(origen.trim(), destino.trim(), peso);
-                        jTextArea1.setText("✅ Conexión agregada: " + origen + " ↔ " + destino +
+                        String origenF = Normalizador.NormalizarTexto(origen); //normalizamos estos dos nombres si no existen
+                        String destinoF = Normalizador.NormalizarTexto(destino);
+                        grafo.agregarConexión(origenF.trim(), destinoF.trim(), peso);
+                        jTextArea1.setText("✅ Conexión agregada: " + origenF + " ↔ " + destinoF +
                                 " (peso: " + peso + ")");
                     } catch (NumberFormatException e) {
                         jTextArea1.setText("❌ Error: El peso debe ser un número entero.");
