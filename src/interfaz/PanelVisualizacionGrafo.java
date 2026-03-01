@@ -35,6 +35,7 @@ public class PanelVisualizacionGrafo extends JPanel {
      * @param grafo El grafo de proteínas a visualizar
      */
     public void visualizarGrafo(Grafo grafo) {
+        
         if (grafo == null || grafo.getCantidadProteinas() == 0) {
             JOptionPane.showMessageDialog(this, 
                 "No hay grafo cargado.", 
@@ -56,7 +57,7 @@ public class PanelVisualizacionGrafo extends JPanel {
             grafoVisual.setAttribute("ui.stylesheet", 
                 "node { fill-color: rgb(100,150,255); size: 20px; text-color: white; text-size: 12; } " +
                 "edge { fill-color: rgb(200,200,200); text-size: 10; text-color: rgb(100,100,100); } " +
-                "graph { background-color: white; padding: 20px; }");
+                "graph { canvas-color: white; padding: 20px; }");
             
             String[] nombres = grafo.getNombres();
             boolean[] activas = grafo.getActivas();
@@ -89,15 +90,14 @@ public class PanelVisualizacionGrafo extends JPanel {
                     }
                 }
             }
-            
+            System.setProperty("org.graphstream.ui", "swing"); //hay que decirle explicitamente al graphstream que use el renderer que necesitamos, en este caso swing
             // Crear viewer en thread separado
             viewer = new SwingViewer(grafoVisual, SwingViewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
             viewer.enableAutoLayout();
             
-            grafoVisual.setAttribute("ui.stylesheet", 
-    "graph { background-color: white; padding: 20px; } " +
-    "node { fill-color: rgb(100,150,255); size: 20px; text-color: white; text-size: 12; } " +
-    "edge { fill-color: rgb(200,200,200); text-size: 10; text-color: rgb(100,100,100); }");
+            org.graphstream.ui.swing_viewer.ViewPanel viewPanel = (org.graphstream.ui.swing_viewer.ViewPanel) viewer.addDefaultView(false); //esta linea crea el viewer para renderizar el grafo
+            this.removeAll(); //esta linea limpia toda la data que el PanelVisualizacionGrafo aun puede tener
+            this.add(viewPanel, BorderLayout.CENTER); //esto linea añade el viewer al JPanel, que en este caso es PanelVisualizacionGrafo
             
             // Mostrar mensaje de éxito
             JOptionPane.showMessageDialog(this, 
