@@ -1,97 +1,118 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package interfaz;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import javax.swing.JFileChooser;
 import main.java.Primitivas.Grafo;
 
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.io.*;
+
 /**
- *
- * @author cesar
+ * 
+ * @author josep
  */
 public class GuardadoCSV {
-    JFileChooser selector = new JFileChooser();
-    private static File archivoActual = null;
-
-    public GuardadoCSV() {
-    }
     
-     /** 
-    Tomar en cuenta que este cargado tambien guardará la dirección file.
-    */
-    public Grafo cargarGrafo(File archivo) throws FileNotFoundException, IOException {
-        Grafo grafo = new Grafo(2);
-        String linea;
-        String separador = ",";
-        
-        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
-            while ((linea = br.readLine()) != null) {
-                // Dividimos la línea en partes
-                String[] columnas = linea.split(separador);
-
-                //Columna 1 Proteina
-                String dato1 = columnas[0].trim();
-                grafo.agregarProteina(dato1);
-
-                //Columna 2 Proteina tambien
-                String dato2 = columnas[1].trim();
-                grafo.agregarProteina(dato2);//Nota: El agregarProteina, esta adaptado para evitar que se agregen dos veces
-            }
-        }
-        //Se reinicia el br para la siguiente fase de conectar las proteinas
-        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
-        
+    private static File archivoActual = null;
+    
+    /**
+ * Carga un grafo desde un archivo CSV.
+ * @param archivo El archivo CSV a cargar
+ * @return El grafo cargado en memoria
+ * @throws IOException Si hay error al leer el archivo
+ */
+public Grafo cargarGrafo(File archivo) throws IOException {
+    Grafo grafo = new Grafo(100); // ✅ Capacidad inicial mayor para evitar redimensionamientos
+    String linea;
+    String separador = ",";
+    
+    try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
         while ((linea = br.readLine()) != null) {
-            //Dividimos la línea en partes
-            String[] columnas = linea.split(separador);
-
-            //Columna 1 Proteina
-            String dato1 = columnas[0].trim();
-
-            //Columna 2 Proteina tambien
-            String dato2 = columnas[1].trim();
+            // Saltar líneas vacías
+            if (linea.trim().isEmpty()) continue;
             
-            //Columna 3 Peso
+            // Dividir la línea por comas
+            String[] columnas = linea.split(separador);
+            
+            // Validar que tenga al menos 3 columnas
+            if (columnas.length < 3) {
+                continue; // Saltar líneas inválidas
+            }
+            
+            // Extraer y limpiar datos
+            String dato1 = columnas[0].trim();
+            String dato2 = columnas[1].trim();
             int dato3 = Integer.parseInt(columnas[2].trim());
             
+            // Agregar conexión (agregarProteina se encarga de evitar duplicados)
             grafo.agregarConexión(dato1, dato2, dato3);
-        }}
-        archivoActual = archivo;
-        grafo.imprimirMatrizPeso();
-        
-        return grafo;
+        }
+    } catch (NumberFormatException e) {
+    throw new IOException("Error: El peso debe ser un número entero válido. Verifique el formato del archivo CSV.", e);
+    } catch (ArrayIndexOutOfBoundsException e) {
+        throw new IOException("Error: Formato de archivo inválido. Se esperaban 3 columnas por línea.", e);
     }
     
+    // Guardar referencia al archivo actual para poder guardar cambios después
+    archivoActual = archivo;
+    
+    return grafo;
+}
+    
+    /**
+     * Guarda el grafo en un archivo CSV (solo proteínas activas y conexiones).
+     * @param grafo El grafo a guardar
+     * @return Mensaje de confirmación o error
+     * @throws IOException Si hay error al escribir
+     */
     public String guardar(Grafo grafo) throws IOException {
         if (archivoActual == null) {
-            return "No hay un archivo abierto para guardar.";
+            // Si no hay archivo, abrir JFileChooser para guardar como
+            JFileChooser selector = new JFileChooser();
+            selector.setFileFilter(new FileNameExtensionFilter("Archivos CSV", "csv", "txt"));
+            selector.setAcceptAllFileFilterUsed(false);
+            
+            int seleccion = selector.showSaveDialog(null);
+            if (seleccion != JFileChooser.APPROVE_OPTION) {
+                return "Guardado cancelado.";
+            }
+            
+            archivoActual = selector.getSelectedFile();
+            if (!archivoActual.getName().toLowerCase().endsWith(".csv") && 
+                !archivoActual.getName().toLowerCase().endsWith(".txt")) {
+                archivoActual = new File(archivoActual.getAbsolutePath() + ".csv");
+            }
         }
+        
         try (PrintWriter pw = new PrintWriter(new FileWriter(archivoActual))) {
             int[][] matrizPeso = grafo.getMatrizPeso();
             String[] nombres = grafo.getNombres();
-
-            for (int i = 0; i < nombres.length; i++) {
-                //j = i evita duplicados en grafos simétricos
-                for (int j = i; j < nombres.length; j++) {
+            boolean[] activas = grafo.getActivas();
+            int n = grafo.getCantidadProteinas();
+            int conexionesGuardadas = 0;
+            
+            for (int i = 0; i < n; i++) {
+                if (!activas[i] || nombres[i] == null) continue;
+                
+                for (int j = i + 1; j < n; j++) { // j = i + 1 evita duplicados
+                    if (!activas[j] || nombres[j] == null) continue;
+                    
                     if (grafo.estanConectadas(i, j)) {
-
                         pw.println(nombres[i] + "," + nombres[j] + "," + matrizPeso[i][j]);
+                        conexionesGuardadas++;
                     }
                 }
             }
-            return "Archivo guardado exitosamente en: " + archivoActual.getName();
-
-        } catch (IOException e) {
-            return "Error al escribir en el archivo: " + e.getMessage();
+            
+            return "Archivo guardado exitosamente en: " + archivoActual.getName() + 
+                   "\nConexiones guardadas: " + conexionesGuardadas;
         }
+    }
+    
+    /**
+     * Obtiene la ruta del archivo actual.
+     * @return La ruta del archivo o null si no hay ninguno
+     */
+    public String getArchivoActual() {
+        return archivoActual != null ? archivoActual.getAbsolutePath() : null;
     }
 }
