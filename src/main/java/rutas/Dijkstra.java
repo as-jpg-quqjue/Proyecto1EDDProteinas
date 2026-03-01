@@ -104,7 +104,6 @@ public class Dijkstra {
             }
         }
         
-        // ✅ ELIMINADO: System.out.println(indiceDistanciaMasCorta);
         return indiceDistanciaMasCorta;
     }
     
@@ -113,7 +112,7 @@ public class Dijkstra {
      * @param objetivo Índice del nodo destino
      * @return Lista con los índices del camino
      */
-    public Lista<Integer> obtenerCamino(int objetivo) {
+    public Lista<Integer> obtenerCamino(int objetivo) { //este metodo lo cambiamos un poco para adaptarse a infinito
         Lista<Integer> camino = new Lista<>();
         
         if (this.distancias[objetivo] >= infinito) {

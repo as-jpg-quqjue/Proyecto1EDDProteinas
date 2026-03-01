@@ -55,7 +55,7 @@ public class PanelVisualizacionGrafo extends JPanel {
             
             // Estilos CSS para el grafo
             grafoVisual.setAttribute("ui.stylesheet", 
-                "node { fill-color: rgb(100,150,255); size: 20px; text-color: white; text-size: 12; } " +
+                "node { fill-color: rgb(100,150,255); size: 20px; text-color: black; text-style: bold; text-size: 12; } " + //cambie el color de texto de blanco a negro aqui
                 "edge { fill-color: rgb(200,200,200); text-size: 10; text-color: rgb(100,100,100); } " +
                 "graph { canvas-color: white; padding: 20px; }");
             

@@ -13,6 +13,7 @@ import main.java.Primitivas.Grafo;
 import main.java.buscadores.BFS;
 import main.java.buscadores.CentralidadGrado;
 import main.java.rutas.Dijkstra;
+import Main.java.Primitivas.Normalizador;
 import java.io.File;
 import java.io.IOException;
 import main.java.Primitivas.Lista;
@@ -21,6 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JDialog;  
 import java.awt.Frame;      
+
 
 public class InterfazGrafica extends javax.swing.JPanel {
     
@@ -212,36 +214,97 @@ public class InterfazGrafica extends javax.swing.JPanel {
             opciones,
              opciones[0]);
         
-        if (seleccion == 0) { // Agregar Proteína
-            String nombre = JOptionPane.showInputDialog(this, "Nombre de la nueva proteína:");
-            if (nombre != null && !nombre.trim().isEmpty()) {
-                grafo.agregarProteina(nombre.trim());
-                jTextArea1.setText("✅ Proteína '" + nombre + "' agregada con éxito.");
-            }
-        } else if (seleccion == 1) { // Eliminar Proteína
-            String nombre = JOptionPane.showInputDialog(this, "Nombre de la proteína a eliminar:");
-            if (nombre != null && !nombre.trim().isEmpty()) {
-                grafo.removerProteina(nombre.trim());
-                jTextArea1.setText("✅ Proteína '" + nombre + "' ha sido desactivada.");
-            }
-        } else if (seleccion == 2) { // Agregar Conexión
-            String origen = JOptionPane.showInputDialog(this, "Proteína Origen:");
-            String destino = JOptionPane.showInputDialog(this, "Proteína Destino:");
-            String pesoStr = JOptionPane.showInputDialog(this, "Peso/Costo de la conexión:");
-            if (origen != null && destino != null && pesoStr != null) {
-                try {
-                    int peso = Integer.parseInt(pesoStr.trim());
-                    grafo.agregarConexión(origen.trim(), destino.trim(), peso);
-                    jTextArea1.setText("✅ Conexión agregada: " + origen + " ↔ " + destino + 
-                                     " (peso: " + peso + ")");
-                } catch (NumberFormatException e) {
-                    jTextArea1.setText("❌ Error: El peso debe ser un número entero.");
-                    JOptionPane.showMessageDialog(this,
-                        "El peso debe ser un número válido.",
-                        "Error",
-                        JOptionPane.ERROR_MESSAGE);
+        switch (seleccion) { //cambie esto de un if a un switch para optimizar
+            case 0:
+                {
+                    // Agregar Proteína
+                    String nombre = JOptionPane.showInputDialog(this, "Nombre de la nueva proteína:");
+                    if (nombre != null && !nombre.trim().isEmpty()) {
+                            if (grafo.indexOf(nombre) == -1)
+                            {
+                            String nombreF = Normalizador.NormalizarTexto(nombre);
+                            grafo.agregarProteina(nombreF.trim());
+                            jTextArea1.setText("✅ Proteína '" + nombreF + "' agregada con éxito.");
+                            } 
+                            else { //este else es el caso donde la proteina ya existe
+                            jTextArea1.setText("❌ Error: Esa proteina ya existe dentro del grafo."); 
+                            JOptionPane.showMessageDialog(this,
+                                "Esa proteina ya existe dentro del grafo.",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                         }
+                    break;
+                    }
+                    
+                    else { //este else es el caso donde el nombre es nulo
+                       jTextArea1.setText("❌ Error: No se puede insertar una proteina sin nombre."); 
+                            JOptionPane.showMessageDialog(this,
+                                "No se puede insertar una proteina sin nombre.",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE); 
+                            break;
+                    }
                 }
-            }
+            case 1:
+                {
+                    // Eliminar Proteína
+                    String nombre = JOptionPane.showInputDialog(this, "Nombre de la proteína a eliminar:");
+                    if (nombre != null && !nombre.trim().isEmpty()) {
+                        if (grafo.indexOf(nombre) != -1)
+                        {
+                            grafo.removerProteina(nombre.trim());
+                            jTextArea1.setText("✅ Proteína '" + nombre + "' ha sido desactivada.");
+                        }
+                        else
+                        {//este else es el caso donde la proteina no existe
+                        jTextArea1.setText("❌ Error: Esa proteina no existe."); 
+                        JOptionPane.showMessageDialog(this,
+                                "Esa proteina no existe.",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                            
+                        }
+                        break;
+                    }       
+                    else //este es el caso donde el nombre insertado es vacio
+                    {
+                        jTextArea1.setText("❌ Error: No se puede eliminar una proteina sin nombre."); 
+                            JOptionPane.showMessageDialog(this,
+                                "No se puede eliminar una proteina sin nombre.",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        break;
+                    }
+                }
+            case 2:
+                // Agregar Conexión
+                String origen = JOptionPane.showInputDialog(this, "Proteína Origen:");
+                String destino = JOptionPane.showInputDialog(this, "Proteína Destino:");
+                String pesoStr = JOptionPane.showInputDialog(this, "Peso/Costo de la conexión:");
+                if (origen != null && destino != null && pesoStr != null && !origen.equals(destino)) {
+                    try {
+                        int peso = Integer.parseInt(pesoStr.trim());
+                        grafo.agregarConexión(origen.trim(), destino.trim(), peso);
+                        jTextArea1.setText("✅ Conexión agregada: " + origen + " ↔ " + destino +
+                                " (peso: " + peso + ")");
+                    } catch (NumberFormatException e) {
+                        jTextArea1.setText("❌ Error: El peso debe ser un número entero.");
+                        JOptionPane.showMessageDialog(this,
+                                "El peso debe ser un número válido.",
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                else //este else se encarga de errores cuando intentas poner el destino igual al origen
+                {
+                    jTextArea1.setText("❌ Error: No puedes crear una conexión de una proteina a si misma.");
+                    JOptionPane.showMessageDialog(this,
+                            "No puedes crear una conexión de una proteina a si misma.",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }   break;
+            default:
+                break;
         }
         
     }//GEN-LAST:event_jButton5ActionPerformed
