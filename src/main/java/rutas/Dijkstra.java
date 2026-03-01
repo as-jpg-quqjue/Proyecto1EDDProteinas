@@ -1,141 +1,135 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package main.java.rutas;
 
 import main.java.Primitivas.Grafo;
 import main.java.Primitivas.Lista;
 
 /**
- * Implementa el algoritmo de Dijkstra para encontrar la ruta más corta.
+ *
  * @author mipc2
  */
 public class Dijkstra {
-    
-    private boolean[] explorados;
-    private int[] distancias;
-    private int[] predecesores;
+    private boolean[] explorados; //este array mantendra cuenta de los nodos explorados y no explorados segun el indice que se coloque
+    private int[] distancias; //este array mantendra la distancias entre los arrays desde el nodo de inicio segun el indice que se coloque
+    private int[] predecesores; //este array mantendra cuenta de los predecesores segun el indice que se le coloque
     private int inicio;
-    private int infinito = Integer.MAX_VALUE / 2;
+    int infinito = Integer.MAX_VALUE / 2; //se hace esto para tener un valor super super grande pero no tan grande que no se le puede sumar nada
     
-    public Dijkstra(Grafo grafo, int inicio) {
+    public Dijkstra(Grafo grafo, int inicio){
         int cantidadProteinas = grafo.getCantidadProteinas();
         this.explorados = new boolean[cantidadProteinas];
         this.distancias = new int[cantidadProteinas];
         this.predecesores = new int[cantidadProteinas];
         this.inicio = inicio;
         
-        for (int i = 0; i < cantidadProteinas; i++) {
-            this.explorados[i] = false;
-            this.distancias[i] = infinito;
-            this.predecesores[i] = -1;
+        for (int i = 0; i < cantidadProteinas; i++){
+            this.explorados[i] = false; 
+            this.distancias[i] = infinito; //tuve que cambiar esto de -10 a maximo interger entre 2 porque en dijkstra los numeros negativos joden la logica
+            this.predecesores[i] = -1; //aqui NO se usa infinito, se usa -1 porque esto es para indices
         }
-        this.distancias[inicio] = 0;
+        this.distancias[inicio] = 0; //se define la distancia del nodo de inicio como 0
     }
-    
-    /**
-     * Ejecuta el algoritmo de Dijkstra desde el nodo inicio hasta el objetivo.
-     * @param grafo El grafo a recorrer
-     * @param objetivo Índice del nodo destino
-     * @return Grafo con la ruta más corta o null si no hay ruta
-     */
-    public Grafo algoritmoDijkstra(Grafo grafo, int objetivo) {
+    //esta es la funcion mas importante de la clase dijkstra, recibe un grafo y un int como objetivo, y va iterando mediante el metodo dijkstra por el grafo hasta conseguir el objetivo
+    public Grafo algoritmoDijkstra(Grafo grafo, int objetivo)
+    {
         int cantidadNodos = grafo.getCantidadProteinas();
-        
-        if (cantidadNodos <= 1) {
+        if (cantidadNodos <= 1)
+        {
             return null;
         }
         
-        for (int i = 0; i < cantidadNodos; i++) {
-            int nodoIteracion = encontrarNodoMasCorto();
-            
-            if (nodoIteracion == -1) {
-                break;
-            }
-            
-            this.explorados[nodoIteracion] = true;
-            
-            for (int j = 0; j < cantidadNodos; j++) {
-                if (!this.explorados[j] && grafo.getMatrizPeso()[nodoIteracion][j] != 9999) {
-                    int distanciaNueva = this.distancias[nodoIteracion] + 
-                                        grafo.getMatrizPeso()[nodoIteracion][j];
-                    
-                    if (distanciaNueva < this.distancias[j]) {
-                        this.distancias[j] = distanciaNueva;
-                        this.predecesores[j] = nodoIteracion;
+        else
+        {
+            for (int i = 0; i < cantidadNodos; i++) //aqui esta la logica de cada iteracion dijkstra [i = iteraci�n]
+            {
+                int nodoIteracion = encontrarNodoMasCorto(); //primero se encuentra el nodo mas corto que no se ha explorado aun, se retorna un INDICE, NO un NODO
+                
+                if (nodoIteracion == -1){
+                    System.out.println("Ya no se consiguieron nodos mas cortos no explorados.");
+                    break;
+                }
+                
+                this.explorados[nodoIteracion] = true;
+                
+                for (int j = 0; j < cantidadNodos; j++){
+                    if (this.explorados[j] == false && grafo.getMatrizPeso()[nodoIteracion][j] != 9999) //si no se ha explorado j, si el peso entre Iteracion y j son diferentes de 9999 (no se puede llamar a estarConectadas porque se define si es diferente del 0, no 9999) y si ese nodo esta activo, cumple con todas las condiciones y se puede actualizar la distancia
+                    {
+                        int distanciaNueva = this.distancias[nodoIteracion] + grafo.getMatrizPeso()[nodoIteracion][j]; //sumamos una nueva distancia
+                        
+                        if (distanciaNueva < this.distancias[j]){
+                            this.distancias[j] = distanciaNueva;
+                            this.predecesores[j] = nodoIteracion;
+                        }
                     }
                 }
+                
             }
+           if (this.distancias[objetivo] >= infinito){
+               System.out.println("No hay ruta para llegar hasta: " + grafo.getNombres()[objetivo]);
+               return null;
+           }
+           else
+           {
+               Grafo ruta = new Grafo(cantidadNodos); //creamos un nuevo grafo que solo tendra la ruta mas corta
+               ruta.iniciarMatriz(0, cantidadNodos);
+               
+               int nodoActual = objetivo; //empezamos desde el ultimo nodo, el cual es el objetivo
+               
+               while (nodoActual != inicio && nodoActual != infinito){
+                   int anterior = predecesores[nodoActual];
+                   
+                   if (anterior == -1) {
+                       break;
+                   }
+                   
+                   int indiceNodoActual = ruta.agregarProteina(grafo.getNombres()[nodoActual]); //podemos hacerlo de esta forma ya que el metodo de agregar proteina siempre revisa si una proteina ya existe con ese nombre, asi que no hay que preocuparse de proteinas repetidas
+                   int indiceAnterior = ruta.agregarProteina(grafo.getNombres()[anterior]); //hay que guardar estos indices porque si usamos los indices del grafo origen, el dijkstra no se guarda de forma correcta
+                   
+                   int peso = grafo.getMatrizPeso()[nodoActual][anterior]; //definimos el peso como una variable para ahorrar el tiempo de escribir esto otra y otra vez
+                   
+                   ruta.agregarConexiónInt(indiceNodoActual+1, indiceAnterior+1, peso); //
+                   
+                   nodoActual = anterior;
+               }
+            return ruta;
+           }
         }
-        
-        if (this.distancias[objetivo] >= infinito) {
-            return null;
-        }
-        
-        // Construir grafo de ruta
-        Grafo ruta = new Grafo(cantidadNodos);
-        ruta.iniciarMatriz(0, cantidadNodos);
-        
-        int nodoActual = objetivo;
-        while (nodoActual != inicio && nodoActual != -1) {
-            int anterior = predecesores[nodoActual];
-            if (anterior == -1) break;
-            
-            int indiceNodoActual = ruta.agregarProteina(grafo.getNombres()[nodoActual]);
-            int indiceAnterior = ruta.agregarProteina(grafo.getNombres()[anterior]);
-            int peso = grafo.getMatrizPeso()[nodoActual][anterior];
-            
-            ruta.agregarConexiónInt(indiceNodoActual + 1, indiceAnterior + 1, peso);
-            nodoActual = anterior;
-        }
-        
-        return ruta;
     }
     
-    /**
-     * Encuentra el nodo no explorado con la distancia más corta.
-     * @return Índice del nodo o -1 si no hay más nodos
-     */
-    private int encontrarNodoMasCorto() {
-        int distanciaMasCorta = infinito;
-        int indiceDistanciaMasCorta = -1;
+    //esta funcion es el corazon del dijkstra, se busca la distancia mas corta desde el nodo inicial hasta el final, actualizando distancias[n] y retornando un int que es el indice de la distancia mas corta para continuar, si existe. si no existe se retorna -1
+    private int encontrarNodoMasCorto(){
+        int distanciaMasCorta = infinito; //se define un valor que sirve como comparaci�n, todos los nodos validos tienen que ser menores o iguales a este valor [n = Nodo]
+        int indiceDistanciaMasCorta = -1; //se mantiene grabada el indice del nodo con la conexi�n mas corta
         
-        for (int n = 0; n < this.distancias.length; n++) {
-            if (!this.explorados[n] && this.distancias[n] <= distanciaMasCorta) {
+        for (int n = 0; n < this.distancias.length; n++) //aqui se va a iterar por todos los nodos, si uno aun no se ha explorado y su valor es menor o igual al valor minimo, se convierte en el valor minimo
+        {
+            if (this.explorados[n] == false && this.distancias[n] <= distanciaMasCorta)
+            {
                 distanciaMasCorta = this.distancias[n];
                 indiceDistanciaMasCorta = n;
             }
         }
-        
-        // ✅ ELIMINADO: System.out.println(indiceDistanciaMasCorta);
+        System.out.println(indiceDistanciaMasCorta);
         return indiceDistanciaMasCorta;
     }
     
-    /**
-     * Obtiene el camino como lista de índices desde inicio hasta objetivo.
-     * @param objetivo Índice del nodo destino
-     * @return Lista con los índices del camino
-     */
-    public Lista<Integer> obtenerCamino(int objetivo) {
+    //esta funcion recibe el int objetivo, y busca en las distancias de la clase dijkstra para convertirlas en una lista
+    public Lista<Integer> obtenerCamino (int objetivo){ 
+        //he creado esta funcion a base de lo que esta pidiendo interfaz grafica
         Lista<Integer> camino = new Lista<>();
         
-        if (this.distancias[objetivo] >= infinito) {
+        if (this.distancias[objetivo] >= infinito){
             return camino;
         }
-        
-        int nodoActual = objetivo;
-        while (nodoActual != -1) {
+        int nodoActual = objetivo; //se cicla por todo el grafo, caminando hacia atras siguiendo los pasos del predecesores para hacer la lista
+        while (nodoActual != -1){ 
             camino.insertar(nodoActual);
             nodoActual = predecesores[nodoActual];
         }
         
         return camino;
     }
-    
-    /**
-     * Obtiene la distancia total hasta un nodo.
-     * @param nodo Índice del nodo
-     * @return La distancia o infinito si no hay ruta
-     */
-    public int getDistancia(int nodo) {
-        return distancias[nodo];
-    }
-    
 }
