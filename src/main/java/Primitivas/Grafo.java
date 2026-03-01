@@ -130,17 +130,16 @@ public class Grafo {
     //esta funcion recibe dos ints que actuan como posiciones de dos proteinas, y prueba si su peso de matriz es diferente de 0
     public boolean estanConectadas (int i, int j){
         if (i < 0 || j < 0 || i>=cantidadProteinas || j>=cantidadProteinas) {
-            /**System.out.println("ADVERTENCIA: Insertaste una ubicacion negativa o una proteina fuera de la cantidad de proteinas maximas.");**/
+            System.out.println("ADVERTENCIA: Insertaste una ubicacion negativa o una proteina fuera de la cantidad de proteinas maximas.");
             return false;
         }
         else {
             return (i!=j && matrizPeso[i][j] != 9999); //retorna true si i es diferente de j y si el peso entre i y j son diferentes de 9999
         }
-        
     }
     
     //este procedimiento imprime el peso registrado en todas las proteinas en la matriz
-    /**public void imprimirMatrizPeso (){
+    public void imprimirMatrizPeso (){
         for (int i = 0; i < cantidadProteinas; i++) {
             System.out.print(nombres[i] + " ");
         }
@@ -152,7 +151,7 @@ public class Grafo {
             System.out.println("");
         }
         
-    }**/
+    }
     
     //esta funcion retorna un array con todos los nombres del grafo
     public String[] getNombres() {
