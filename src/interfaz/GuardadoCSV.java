@@ -8,31 +8,34 @@ import java.io.*;
 
 /**
  * 
- * @author josep
+ * @author cesar
  */
 public class GuardadoCSV {
     
     private static File archivoActual = null;
     
     /**
- * Carga un grafo desde un archivo CSV.
- * @param archivo El archivo CSV a cargar
- * @return El grafo cargado en memoria
- * @throws IOException Si hay error al leer el archivo
- */
-public Grafo cargarGrafo(File archivo) throws IOException {
-    Grafo grafo = new Grafo(100); // ✅ Capacidad inicial mayor para evitar redimensionamientos
-    String linea;
-    String separador = ",";
-    
-    try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
-        while ((linea = br.readLine()) != null) {
-            // Saltar líneas vacías
-            if (linea.trim().isEmpty()) continue;
-            
-            // Dividir la línea por comas
-            String[] columnas = linea.split(separador);
-            
+     * Carga un grafo desde un archivo CSV.
+     *
+     * @param archivo El archivo CSV a cargar
+     * @return El grafo cargado en memoria
+     * @throws IOException Si hay error al leer el archivo
+     */
+    public Grafo cargarGrafo(File archivo) throws IOException {
+        Grafo grafo = new Grafo(100); // ✅ Capacidad inicial mayor para evitar redimensionamientos
+        String linea;
+        String separador = ",";
+
+        try (BufferedReader br = new BufferedReader(new FileReader(archivo))) {
+            while ((linea = br.readLine()) != null) {
+                // Saltar líneas vacías
+                if (linea.trim().isEmpty()) {
+                    continue;
+                }
+
+                // Dividir la línea por comas
+                String[] columnas = linea.split(separador);
+
             // Validar que tenga al menos 3 columnas
             if (columnas.length < 3) {
                 continue; // Saltar líneas inválidas
@@ -44,7 +47,11 @@ public Grafo cargarGrafo(File archivo) throws IOException {
             int dato3 = Integer.parseInt(columnas[2].trim());
             
             // Agregar conexión (agregarProteina se encarga de evitar duplicados)
-            grafo.agregarConexión(dato1, dato2, dato3);
+            if ("(!)".equals(dato2)) {//Si la proteina dato1 apunta a (!), entonces solo se agrega dato1
+                grafo.agregarProteina(dato1);
+            }else{
+                grafo.agregarConexión(dato1, dato2, dato3);//Dentro de agregar conexción tambien se agrega la proteina
+            }
         }
     } catch (NumberFormatException e) {
     throw new IOException("Error: El peso debe ser un número entero válido. Verifique el formato del archivo CSV.", e);
@@ -91,7 +98,9 @@ public Grafo cargarGrafo(File archivo) throws IOException {
             int conexionesGuardadas = 0;
             
             for (int i = 0; i < n; i++) {
+                
                 if (!activas[i] || nombres[i] == null) continue;
+                boolean aislada = true;//Esta variable ayudará con las proteinas que estan aisladas y lo agregarán al archivo
                 
                 for (int j = i + 1; j < n; j++) { // j = i + 1 evita duplicados
                     if (!activas[j] || nombres[j] == null) continue;
@@ -99,7 +108,11 @@ public Grafo cargarGrafo(File archivo) throws IOException {
                     if (grafo.estanConectadas(i, j)) {
                         pw.println(nombres[i] + "," + nombres[j] + "," + matrizPeso[i][j]);
                         conexionesGuardadas++;
+                        aislada = false;
                     }
+                }
+                if (aislada) {
+                    pw.println(nombres[i] + "," + "(!)" + "," + 0);//(!) representará vacio.
                 }
             }
             
@@ -114,5 +127,51 @@ public Grafo cargarGrafo(File archivo) throws IOException {
      */
     public String getArchivoActual() {
         return archivoActual != null ? archivoActual.getAbsolutePath() : null;
+    }
+
+    public void setArchivoActual(File archivoActual) {
+        GuardadoCSV.archivoActual = archivoActual;
+    }
+    
+    /**
+     * Crea un archivo nuevo en caso de que no haya uno.
+     * 
+     */
+    public String crearNuevoArchivo(Grafo grafo) {
+        JFileChooser selector = new JFileChooser();
+        selector.setDialogTitle("Crear nuevo archivo CSV para el grafo");
+        
+        //Filtro para CSV
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivo CSV (*.csv)", "csv");
+        selector.setFileFilter(filtro);
+
+        int resultado = selector.showSaveDialog(null);
+
+        if (resultado == JFileChooser.APPROVE_OPTION) {
+            File archivoSeleccionado = selector.getSelectedFile();
+            String ruta = archivoSeleccionado.getAbsolutePath();
+
+            //Si el usuario no escribió ".csv", se lo agrega
+            if (!ruta.toLowerCase().endsWith(".csv")) {
+                archivoSeleccionado = new File(ruta + ".csv");
+            }
+
+            try {
+                //Se crea el archivo físicamente
+                //Si ya existe, lo vacía. Si no existe, lo crea.
+                FileWriter fw = new FileWriter(archivoSeleccionado);
+                fw.close();
+
+                //Se actualiza el archivoActual
+                archivoActual = archivoSeleccionado;
+                
+                JOptionPane.showMessageDialog(null, "Archivo creado: " + archivoActual.getName());
+                return this.guardar(grafo);
+
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(null, "Error al crear el archivo: " + e.getMessage());
+            }
+        }
+        return "Guardado cancelado.";
     }
 }

@@ -20,6 +20,7 @@ import java.awt.*;
 public class PanelVisualizacionGrafo extends JPanel {
     
     private Graph grafoVisual;
+    private int infinito = Integer.MAX_VALUE / 2;
     private SwingViewer viewer;
     
     /**
@@ -128,7 +129,7 @@ public class PanelVisualizacionGrafo extends JPanel {
     private int calcularGrado(int i, int n, int[][] matriz, boolean[] activas) {
         int grado = 0;
         for (int j = 0; j < n; j++) {
-            if (i != j && activas[j] && matriz[i][j] != 9999) {
+            if (i != j && activas[j] && matriz[i][j] != infinito) {
                 grado++;
             }
         }

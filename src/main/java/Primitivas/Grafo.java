@@ -12,6 +12,7 @@ public class Grafo {
     private boolean[] activas;
     private int[][] matrizPeso;
     private int cantidadProteinas;
+    private int infinito = Integer.MAX_VALUE / 2;
 
     public Grafo(int cantidadInicial) {
         if (cantidadInicial > 1) {
@@ -24,21 +25,21 @@ public class Grafo {
     }
     
     /** 
-    Inicia la matriz, asigna cero si no hay conexión y asigna 9999 si hay conexión.
+    Inicia la matriz, asigna cero si no hay conexión y asigna infinito si hay conexión.
     */
     public void iniciarMatriz(int desde, int hasta){
         for (int i = desde; i < hasta; i++) {
             for (int j = 0; j < hasta; j++) {
-                matrizPeso[i][j] = 9999;
+                matrizPeso[i][j] = infinito;
             }
         }
         for (int i = 0; i <hasta; i++) {
             for (int j = desde; j < hasta; j++) {
-                matrizPeso[i][j] = 9999;
+                matrizPeso[i][j] = infinito;
             }
         }
         for (int i = 0; i < hasta; i++) {
-            matrizPeso[i][i] = 9999;
+            matrizPeso[i][i] = infinito;
         }
 
     }
@@ -64,6 +65,19 @@ public class Grafo {
         }
     }
     
+    //esta funcion es para eliminar conexciones entre dos proteinas con sus nombres, retorna un boolean que confirma la elimacion
+    public boolean eliminarConexión (String a, String b){
+        int valorA = indexOf(a);
+        int valorB = indexOf(b);
+        if (valorA == -1 || valorB == -1) {
+            return false;
+        }else{
+            matrizPeso[valorA][valorB] = infinito;
+            matrizPeso[valorB][valorA] = infinito;
+            return true;
+        }
+    }
+    
      /** 
     * Agrega una conexión entre proteínas de forma bilateral, es necesario saber el nombre de las proteinas a conectar.
     */
@@ -76,19 +90,21 @@ public class Grafo {
         }
     }
     
-    //este procedimiento recibe el string nombre y la busca en el grafo, si existe, la desactiva y pone el peso en 9999
+    //Este procedimiento recibe el string nombre y la busca en el grafo, si existe, la desactiva y pone el peso en 9999
     public void removerProteina (String nombre){
         int i = indexOf(nombre);
         if (i != -1) {
             activas[i] = false;
+            nombres[i] = null;
             for (int j = 0; j < cantidadProteinas; j++) {
-                matrizPeso[i][j] = 9999;
-                matrizPeso[j][i] = 9999;
+                matrizPeso[i][j] = infinito;
+                matrizPeso[j][i] = infinito;
             }
+            cantidadProteinas--;
         }
     }
     
-    //esta funcion recibe el nombre de una proteina y la busca hasta conseguirla, sino, retorna -1 como marcador de que no esta
+    //Esta funcion recibe el nombre de una proteina y la busca hasta conseguirla, sino, retorna -1 como marcador de que no esta
     public int indexOf (String nombre){
         for (int i = 0; i < cantidadProteinas; i++) {
             if (nombres[i].equals(nombre)) {
@@ -114,7 +130,7 @@ public class Grafo {
         }
         for (int i = 0; i < nuevaCapa; i++) {
             for (int j = 0; j < nuevaCapa; j++) {
-                nuevaMatrizPeso[i][j] = 9999;
+                nuevaMatrizPeso[i][j] = infinito;
             }
         }
         for (int i = 0; i < cantidadProteinas; i++) {
@@ -134,7 +150,7 @@ public class Grafo {
             return false;
         }
         else {
-            return (i!=j && matrizPeso[i][j] != 9999); //retorna true si i es diferente de j y si el peso entre i y j son diferentes de 9999
+            return (i!=j && matrizPeso[i][j] != infinito); //retorna true si i es diferente de j y si el peso entre i y j son diferentes de 9999
         }
         
     }

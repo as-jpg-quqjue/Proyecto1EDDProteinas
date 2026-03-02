@@ -5,7 +5,8 @@
         <group>
             <file>file:/C:/Users/cesar/OneDrive/Documents/NetBeansProjects/Proyecto1EDDProteinas/src/interfaz/InterfazGrafica.java</file>
             <file>file:/C:/Users/cesar/OneDrive/Documents/NetBeansProjects/Proyecto1EDDProteinas/src/main/java/Primitivas/Grafo.java</file>
-            <file>file:/C:/Users/cesar/OneDrive/Documents/NetBeansProjects/Proyecto1EDDProteinas/src/main/java/rutas/Dijkstra.java</file>
+            <file>file:/C:/Users/cesar/OneDrive/Documents/NetBeansProjects/Proyecto1EDDProteinas/src/interfaz/GuardadoCSV.java</file>
+            <file>file:/C:/Users/cesar/OneDrive/Documents/NetBeansProjects/Proyecto1EDDProteinas/src/main/java/buscadores/DFS.java</file>
         </group>
     </open-files>
 </project-private>
