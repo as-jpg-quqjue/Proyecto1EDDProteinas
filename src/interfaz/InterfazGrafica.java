@@ -13,7 +13,7 @@ import main.java.Primitivas.Grafo;
 import main.java.buscadores.BFS;
 import main.java.buscadores.CentralidadGrado;
 import main.java.rutas.Dijkstra;
-import Main.java.Primitivas.Normalizador;
+import main.java.Primitivas.Normalizador;
 import java.io.File;
 import java.io.IOException;
 import main.java.Primitivas.Lista;

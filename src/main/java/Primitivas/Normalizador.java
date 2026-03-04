@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Main.java.Primitivas;
+package main.java.Primitivas;
 
 /**
  *
@@ -16,9 +16,9 @@ public class Normalizador {
     private static Pattern diacritos = Pattern.compile("\\p{InCombiningDiacriticalMarks}+"); //esto compila todos los caracteres raros comos ´, ~, etc en un regex. 
     
     /**
-     * Esta función estática recibe un String inputS, y utilizando el estatico diacritos lo compara, separando primero los simbolos diacritos y luego reemplazandolos usando el regex con espacios, retornando un inputF.
-     * @param inputS
-     * @return
+     * Esta función estática recibe un String inputS, en caso de que no este vació, se utiliza el estático diacritos y lo compara, separando primero los símbolos diacríticos y luego reemplazandolos usando el regex con nulo, retornando un inputF.
+     * @param inputS El string que deseamos normalizar.
+     * @return Un string normalizado sin carácteres especiales (acentos, diéresis).
      */
     public static String NormalizarTexto(String inputS){
         

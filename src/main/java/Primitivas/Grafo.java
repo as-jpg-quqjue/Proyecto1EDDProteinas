@@ -4,7 +4,7 @@
  */
 package main.java.Primitivas;
 /**
- *
+ * Es un grafo que mantiene cuenta de "nodos" a las que se llaman proteinas mediante arrays y las conexiones entre ellas.
  * @author cesar
  */
 public class Grafo {
@@ -45,6 +45,11 @@ public class Grafo {
     }
     
     //esta funcion recibe un nombre y agrega una proteina con ese nombre, retornando la cantidad nueva de proteinas
+    /**
+     * Esta función recibe un String nombre y verificando si no existe en el grafo, luego continua garantizando la capacidad, marcandola en la lista de nombres y activandola, retornando la nueva cantidad de proteinas.  
+     * @param nombre Un string que se le desea llamar a la proteina.
+     * @return La nueva cantidad de proteinas del grafo.
+     */
     public int agregarProteina (String nombre){
         int i = indexOf(nombre);
         if (i != -1) {

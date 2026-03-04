@@ -11,29 +11,19 @@ public class Proyecto1EDD_Final {
 
     public static void main(String[] args) {
         
-        // Es una buena práctica de Java iniciar la interfaz gráfica en su propio hilo
+        //insertamos la interfaz en su propio proceso para evitar comportamiento no deseado y optimizar
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 
-                // 1. Creamos la ventana principal (el marco)
+                //creamos el JFrame, luego un InterfazGrafico y lo insertamos al JFrame
                 JFrame ventana = new JFrame("BioGraph - Proyecto 1 EDD");
-                
-                // 2. Indicamos que el programa debe terminar cuando se cierre la ventana
                 ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                
-                // 3. Instanciamos tu panel (la interfaz que tú diseñaste con los botones)
                 InterfazGrafica miPanel = new InterfazGrafica();
-                
-                // 4. Metemos tu panel dentro de la ventana
                 ventana.add(miPanel);
                 
-                // 5. Ajustamos automáticamente el tamaño de la ventana para que quepa todo tu panel
+                // ajustamos el tamaño para que todo quepe en la ventana, y luego lo centramos en el medio de la pantalla, finalmente haciendolo visible
                 ventana.pack();
-                
-                // 6. Centramos la ventana en el medio de la pantalla
                 ventana.setLocationRelativeTo(null);
-                
-                // 7. Finalmente, hacemos que todo sea visible
                 ventana.setVisible(true);
             }
         });
