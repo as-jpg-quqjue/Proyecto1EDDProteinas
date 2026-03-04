@@ -22,7 +22,7 @@ public class GuardadoCSV {
      * @throws IOException Si hay error al leer el archivo
      */
     public Grafo cargarGrafo(File archivo) throws IOException {
-        Grafo grafo = new Grafo(100); // ✅ Capacidad inicial mayor para evitar redimensionamientos
+        Grafo grafo = new Grafo(100); 
         String linea;
         String separador = ",";
 
@@ -135,7 +135,8 @@ public class GuardadoCSV {
     
     /**
      * Crea un archivo nuevo en caso de que no haya uno.
-     * 
+     * @param grafo El grafo que se va a utilizar para el nuevo archivo.
+     * @return Un string que confirma si la creación de archivo fue exitosa.
      */
     public String crearNuevoArchivo(Grafo grafo) {
         JFileChooser selector = new JFileChooser();

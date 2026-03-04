@@ -12,6 +12,10 @@ package main.java.Primitivas;
 import java.text.Normalizer;
 import java.util.regex.Pattern;
 
+/**
+ * Esta clase se encarga de normalizar Strings recibidos por una función.
+ * @author milaptop
+ */
 public class Normalizador {
     private static Pattern diacritos = Pattern.compile("\\p{InCombiningDiacriticalMarks}+"); //esto compila todos los caracteres raros comos ´, ~, etc en un regex. 
     

@@ -229,7 +229,11 @@ public class InterfazGrafica extends javax.swing.JPanel {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    /**
+     * Este procedimiento cicla por cuatro opciónes para modificar el grafo, que incluyen añadir o eliminar una proteina o una conexión.
+     * @param evt 
+     */
     private void ModificarGrafoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModificarGrafoActionPerformed
         String[] opciones = {"Agregar Proteína", "Eliminar Proteína", "Agregar Conexión", "Eliminar conexión"};
         int seleccion = JOptionPane.showOptionDialog(this,
@@ -365,7 +369,10 @@ public class InterfazGrafica extends javax.swing.JPanel {
         }
         
     }//GEN-LAST:event_ModificarGrafoActionPerformed
-
+    /**
+     * Este procedimiento llama para cargar un archivo .csv que guarda los datos de un grafo.
+     * @param evt 
+     */
     private void CargarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CargarArchivoActionPerformed
         if (grafo != null && grafo.getCantidadProteinas() > 0) {
         int confirmacion = JOptionPane.showConfirmDialog(this,
@@ -390,10 +397,7 @@ public class InterfazGrafica extends javax.swing.JPanel {
         File archivoSeleccionado = fileChooser.getSelectedFile();
         
             try {
-            // Cargar el grafo
             grafo = gargar.cargarGrafo(archivoSeleccionado);
-            
-            // ✅ Mostrar mensaje de éxito en la interfaz
             output.setText("✅ Archivo cargado exitosamente:\n" + 
                              archivoSeleccionado.getName() + "\n\n" +
                              "Proteínas cargadas: " + grafo.getCantidadProteinas() + "\n" +
@@ -405,7 +409,6 @@ public class InterfazGrafica extends javax.swing.JPanel {
                 "Carga Exitosa", 
                 JOptionPane.INFORMATION_MESSAGE);
             } catch (IOException ex) {
-            // ✅ Mostrar error visible al usuario
             output.setText("❌ Error al cargar el archivo:\n" + ex.getMessage());
             JOptionPane.showMessageDialog(this,
                 "Error al cargar: " + ex.getMessage(),
@@ -413,11 +416,11 @@ public class InterfazGrafica extends javax.swing.JPanel {
                 JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace();
         } catch (Exception ex) {
-            // ✅ Capturar cualquier otro error inesperado
+            //para errores no esperados
             output.setText("❌ Error inesperado: " + ex.getMessage());
             JOptionPane.showMessageDialog(this,
                 "Error inesperado: " + ex.getMessage(),
-                "Error Crítico",
+                "Error",
                 JOptionPane.ERROR_MESSAGE);
             ex.printStackTrace();
         }
@@ -425,6 +428,10 @@ public class InterfazGrafica extends javax.swing.JPanel {
 
     }//GEN-LAST:event_CargarArchivoActionPerformed
     
+    /**
+     * Este procedimiento llama para guardar el grafo actual en el archivo cargado.
+     * @param evt 
+     */
     private void ActualizarRepositorioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActualizarRepositorioActionPerformed
       if (grafo == null || grafo.getCantidadProteinas() == 0) {
             output.setText("❌ No hay grafo en memoria para guardar.");
@@ -454,7 +461,11 @@ public class InterfazGrafica extends javax.swing.JPanel {
                 JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_ActualizarRepositorioActionPerformed
-
+    
+    /**
+     * Este procedimiento carga el grafo por GraphStream y luego lo pone en display.
+     * @param evt 
+     */
     private void MostrarGrafoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MostrarGrafoActionPerformed
      if (grafo == null || grafo.getCantidadProteinas() == 0) {
             output.setText("❌ No hay grafo cargado. Carga un archivo primero.");
@@ -471,6 +482,7 @@ public class InterfazGrafica extends javax.swing.JPanel {
         
         // Visualizar nuevo grafo
         panelVisualizacion.visualizarGrafo(grafo);
+        
         // Mostrar dialog
         dialogVisualizacion.setVisible(true);
         
@@ -479,7 +491,11 @@ public class InterfazGrafica extends javax.swing.JPanel {
                          "Los nodos rojos representan Hubs (≥5 conexiones)");
         
     }//GEN-LAST:event_MostrarGrafoActionPerformed
-
+    
+    /**
+     * Este procedimiento le pregunta al usuario sobre el nombre de una proteina y luego le pregunta si quiere buscar cuantas proteinas tiene el componente por DFS o BFS.
+     * @param evt 
+     */
     private void DCPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DCPActionPerformed
        if (grafo == null || grafo.getCantidadProteinas() == 0) {
             output.setText("❌ El grafo está vacío. Carga un archivo primero.");
@@ -535,7 +551,11 @@ public class InterfazGrafica extends javax.swing.JPanel {
         }
         
     }//GEN-LAST:event_DCPActionPerformed
-
+    
+    /**
+     * Este procedimiento le pregunta al usuario por dos nombres de proteinas para luego  llamar una clase Djikstra y encontrar la ruta mas corta.
+     * @param evt 
+     */
     private void RMMCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RMMCActionPerformed
         if (grafo == null || grafo.getCantidadProteinas() < 2) {
             output.setText("❌ No hay suficientes proteínas para calcular rutas.");
@@ -596,7 +616,11 @@ public class InterfazGrafica extends javax.swing.JPanel {
             
     
     }//GEN-LAST:event_RMMCActionPerformed
-
+    
+    /**
+     * Este procedimiento busca la centralidad del grafo para encontrar la proteina con la mayor cantidad de conexiones.
+     * @param evt 
+     */
     private void HubsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HubsActionPerformed
      if (grafo == null || grafo.getCantidadProteinas() == 0) {
             output.setText("❌ El grafo está vacío.");
@@ -610,12 +634,12 @@ public class InterfazGrafica extends javax.swing.JPanel {
             String nombreMejor = grafo.getNombres()[mejorProteinaIndex];
             int cantidadConexiones = cg.grado(mejorProteinaIndex, grafo.getCantidadProteinas());
             
-            output.setText("🎯 Identificación de Hubs (Centralidad de Grado)\n");
+            output.setText("Identificación de Hubs (Centralidad de Grado)\n");
             output.append("========================================\n");
             output.append("Proteína más esencial (Hub): " + nombreMejor + "\n");
             output.append("Cantidad de interacciones: " + cantidadConexiones + "\n");
             output.append("Índice en memoria: " + mejorProteinaIndex + "\n\n");
-            output.append("💡 Esta proteína es una diana terapéutica primaria.\n");
+            output.append(" Esta proteína es una diana terapéutica primaria.\n");
             output.append("   Si es anulada, podría mitigar el efecto del patógeno.");
             
             JOptionPane.showMessageDialog(this,
@@ -629,7 +653,10 @@ public class InterfazGrafica extends javax.swing.JPanel {
         
     
     }//GEN-LAST:event_HubsActionPerformed
-
+    /**
+     * Este procedimiento le pregunta al usuario si quiere crear un nuevo grafo, si el usuario pone si, se crea un nuevo grafo.
+     * @param evt 
+     */
     private void GrafoNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GrafoNuevoActionPerformed
         String[] opciones = {"Sí", "No"};
         int seleccion = JOptionPane.showOptionDialog(this,

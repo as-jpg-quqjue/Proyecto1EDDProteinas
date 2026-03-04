@@ -15,7 +15,7 @@ import java.awt.*;
 /**
  * Panel para visualización del grafo con GraphStream.
  * Muestra nodos (proteínas) y aristas (interacciones) de forma visual.
- * @author Equipo BioGraph
+ * @author jossep
  */
 public class PanelVisualizacionGrafo extends JPanel {
     
@@ -58,7 +58,7 @@ public class PanelVisualizacionGrafo extends JPanel {
             grafoVisual.setAttribute("ui.stylesheet", 
                 "node { fill-color: rgb(100,150,255); size: 20px; text-color: black; text-style: bold; text-size: 12; } " + //cambie el color de texto de blanco a negro aqui
                 "edge { fill-color: rgb(200,200,200); text-size: 10; text-color: rgb(100,100,100); } " +
-                "graph { canvas-color: white; padding: 20px; }");
+                "graph { canvas-color: white; padding: 20px; fill-mode: plain; }");
             
             String[] nombres = grafo.getNombres();
             boolean[] activas = grafo.getActivas();
@@ -92,15 +92,17 @@ public class PanelVisualizacionGrafo extends JPanel {
                 }
             }
             System.setProperty("org.graphstream.ui", "swing"); //hay que decirle explicitamente al graphstream que use el renderer que necesitamos, en este caso swing
-            // Crear viewer en thread separado
+            //se crea esto en un thread separado
             viewer = new SwingViewer(grafoVisual, SwingViewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
             viewer.enableAutoLayout();
             
             org.graphstream.ui.swing_viewer.ViewPanel viewPanel = (org.graphstream.ui.swing_viewer.ViewPanel) viewer.addDefaultView(false); //esta linea crea el viewer para renderizar el grafo
             this.removeAll(); //esta linea limpia toda la data que el PanelVisualizacionGrafo aun puede tener
             this.add(viewPanel, BorderLayout.CENTER); //esto linea añade el viewer al JPanel, que en este caso es PanelVisualizacionGrafo
+            this.revalidate(); 
+            this.repaint(); //estas dos lineas aseguran que la ventana se esta poniendo en display de forma correcta
+            viewPanel.requestFocusInWindow();
             
-            // Mostrar mensaje de éxito
             JOptionPane.showMessageDialog(this, 
                 "✅ Grafo visualizado en ventana emergente.\n" +
                 "• Nodos azules: Proteínas normales\n" +
@@ -126,7 +128,7 @@ public class PanelVisualizacionGrafo extends JPanel {
      * @param activas Array de proteínas activas
      * @return Número de conexiones del nodo
      */
-    private int calcularGrado(int i, int n, int[][] matriz, boolean[] activas) {
+    private int calcularGrado(int i, int n, int[][] matriz, boolean[] activas) { //esto es un metodo duplicado, ya existe uno en centralidadgrado
         int grado = 0;
         for (int j = 0; j < n; j++) {
             if (i != j && activas[j] && matriz[i][j] != infinito) {
@@ -137,7 +139,7 @@ public class PanelVisualizacionGrafo extends JPanel {
     }
     
     /**
-     * Libera recursos del viewer al cerrar.
+     * Este procedimiento libera recursos del viewer al cerrar.
      */
     public void liberarRecursos() {
         if (viewer != null) {

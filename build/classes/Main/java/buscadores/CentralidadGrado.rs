@@ -1,1 +1,0 @@
-main.java.buscadores.CentralidadGrado

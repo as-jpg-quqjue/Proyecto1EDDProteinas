@@ -17,8 +17,10 @@ public class CentralidadGrado {
         this.grafoAux = grafo;
     }
     /** 
-    * Devuelve la posición (int) donde esta la proteina con mayor cantidad de conexiones.
-    */
+     * Devuelve la posición (int) donde esta la proteina con mayor cantidad de conexiones.
+     * @return Un entero que es el indice de la proteina con mayor cantidad de conexiónes.
+     */
+    
     public int centralidadPosicion (){
         
         
@@ -37,13 +39,21 @@ public class CentralidadGrado {
         return mejorProteina;
     }
     
-    /** 
-    * Devuelve el nombre de la proteina con mayor cantidad de conexiones.
-    */
+ /**
+  * Esta función busca el nodo central utilizando un nombre y la función centralidadPosicion.
+  * @return Un string que es el nombre de la proteina con mayor cantidad de conexiones.
+
+  */
     public String centralidadNombre (){
         return grafoAux.getNombres()[this.centralidadPosicion()];
     }
     
+    /**
+     * Esta función recibe el indice de una proteina y el tamaño de proteinas totales, y va contando cuantas conexiones tiene esta proteina.
+     * @param i Entero que es el indice de una proteina para buscar el grado del mismo.
+     * @param n Entero que es la cantidad de proteinas totales del grafo.
+     * @return Un entero que dice cuantas proteinas estan conectadas a i.
+     */
     public int grado (int i, int n){
         int d = 0;
         

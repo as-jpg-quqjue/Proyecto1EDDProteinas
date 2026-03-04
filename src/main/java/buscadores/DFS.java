@@ -11,7 +11,13 @@ import main.java.Primitivas.Grafo;
  * @author cesar
  */
 public class DFS {
-    //AÑADIR DOCUMENTACION DE QUE HACE ESTE PROCEDIMIENTO
+    
+    /**
+     * 
+     * @param inicio Un entero que es el indice del a proteina de inicio.
+     * @param grafo Un grafo donde se va a buscar las proteinas del componente.
+     * @return Un array que contiene todos los indices de las proteinas en el componente.
+     */
     public int [] dfsComponente (int inicio, Grafo grafo){
         int n = grafo.getCantidadProteinas();
         
