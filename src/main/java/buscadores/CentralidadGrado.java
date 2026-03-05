@@ -5,6 +5,7 @@
 package main.java.buscadores;
 
 import main.java.Primitivas.Grafo;
+import main.java.Primitivas.Lista;
 
 /**
  *Busca la proteina con mayor cantidad de conexiones.
@@ -17,35 +18,43 @@ public class CentralidadGrado {
         this.grafoAux = grafo;
     }
     /** 
-     * Devuelve la posición (int) donde esta la proteina con mayor cantidad de conexiones.
-     * @return Un entero que es el indice de la proteina con mayor cantidad de conexiónes.
+     * Devuelve la posición (int) donde esta la proteina con mayor cantidad de conexiones. 
+     * @return Una lista que contiene los indices de las proteinas hubs.
      */
     
-    public int centralidadPosicion (){
+    public Lista centralidadPosicion (){
         
         
-        int mejorProteina = -1;
         int mejorGrado = -1;
+        Lista<Integer> mejoresProteinas = new Lista();
         
         for (int i = 0; i < grafoAux.getCantidadProteinas(); i++) {
             int d = grado(i, grafoAux.getCantidadProteinas());
             
             if (d > mejorGrado) {
                 mejorGrado = d;
-                mejorProteina = i;
+                mejoresProteinas = new Lista<>(); //en el caso donde se encuentra un grado mas grande, se limpia la lista 
+                mejoresProteinas.insertar(i);
+            }
+            
+            else if (d == mejorGrado && mejorGrado != -1){
+                mejoresProteinas.insertar(i); //esta función se tuvo que modificar para poder añadir mas proteinas que tenga la misma cantidad de conexiones, y que estas ambas sean la mayor
             }
         }
         
-        return mejorProteina;
+        return mejoresProteinas;
     }
     
  /**
-  * Esta función busca el nodo central utilizando un nombre y la función centralidadPosicion.
+  * Esta función busca el nodo central utilizando un nombre y la función centralidadPosicion. Como precondición la lista que se pasa no puede estar vacía.
+  * @param indice Un int que es la posición en la lista donde se desea buscar las mejores proteinas.
   * @return Un string que es el nombre de la proteina con mayor cantidad de conexiones.
 
   */
-    public String centralidadNombre (){
-        return grafoAux.getNombres()[this.centralidadPosicion()];
+    public String centralidadNombre (int indice){
+        Lista<Integer> mejoresProteinas = this.centralidadPosicion();
+        int proteinId = mejoresProteinas.buscarPosición(indice);   
+        return grafoAux.getNombres()[proteinId];
     }
     
     /**

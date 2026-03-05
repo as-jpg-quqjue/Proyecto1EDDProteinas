@@ -5,7 +5,7 @@ import main.java.Primitivas.Grafo;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
-
+import main.java.Primitivas.Normalizador;
 /**
  * 
  * @author cesar
@@ -48,8 +48,11 @@ public class GuardadoCSV {
             
             // Agregar conexión (agregarProteina se encarga de evitar duplicados)
             if ("(!)".equals(dato2)) {//Si la proteina dato1 apunta a (!), entonces solo se agrega dato1
-                grafo.agregarProteina(dato1);
+                dato1 = Normalizador.NormalizarTexto(dato1);
+                grafo.agregarProteina(dato1); //añadi estas normalizaciones para evitar que se cargen archivos con diacriticos o letras minusculas
             }else{
+                dato1 = Normalizador.NormalizarTexto(dato1);
+                dato2 = Normalizador.NormalizarTexto(dato2);
                 grafo.agregarConexión(dato1, dato2, dato3);//Dentro de agregar conexción tambien se agrega la proteina
             }
         }

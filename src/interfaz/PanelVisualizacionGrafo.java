@@ -5,6 +5,7 @@
 package interfaz;
 
 import main.java.Primitivas.Grafo;
+import main.java.buscadores.CentralidadGrado;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.ui.swing_viewer.SwingViewer;
@@ -57,22 +58,23 @@ public class PanelVisualizacionGrafo extends JPanel {
             // Estilos CSS para el grafo
             grafoVisual.setAttribute("ui.stylesheet", 
                 "node { fill-color: rgb(100,150,255); size: 20px; text-color: black; text-style: bold; text-size: 12; } " + //cambie el color de texto de blanco a negro aqui
-                "edge { fill-color: rgb(200,200,200); text-size: 10; text-color: rgb(100,100,100); } " +
+                "edge { fill-color: rgb(200,200,200); text-size: 10; text-color: rgb(100,100,100); arrow-shape: none; } " +
                 "graph { canvas-color: white; padding: 20px; fill-mode: plain; }");
             
             String[] nombres = grafo.getNombres();
             boolean[] activas = grafo.getActivas();
             int[][] matriz = grafo.getMatrizPeso();
             int n = grafo.getCantidadProteinas();
+            CentralidadGrado centralidad = new CentralidadGrado(grafo);
             
             // Agregar nodos (solo proteínas activas)
             for (int i = 0; i < n; i++) {
-                if (activas[i] && nombres[i] != null) {
+                if (nombres[i] != null && activas[i]) {
                     org.graphstream.graph.Node nodo = grafoVisual.addNode(nombres[i]);
                     nodo.setAttribute("ui.label", nombres[i]);
                     
                     // Resaltar Hubs (≥5 conexiones) en rojo
-                    if (calcularGrado(i, n, matriz, activas) >= 5) {
+                    if (centralidad.grado(i, n) >= 5) {
                         nodo.setAttribute("ui.style", 
                             "fill-color: rgb(255,100,100); size: 25px;");
                     }
@@ -105,8 +107,8 @@ public class PanelVisualizacionGrafo extends JPanel {
             
             JOptionPane.showMessageDialog(this, 
                 "✅ Grafo visualizado en ventana emergente.\n" +
-                "• Nodos azules: Proteínas normales\n" +
-                "• Nodos rojos: Hubs (≥5 conexiones)\n" +
+                "- Nodos azules: Proteínas normales\n" +
+                "- Nodos rojos: Hubs (≥5 conexiones)\n" +
                 "Cierra la ventana del grafo para continuar.",
                 "Visualización Exitosa", 
                 JOptionPane.INFORMATION_MESSAGE);
@@ -118,24 +120,6 @@ public class PanelVisualizacionGrafo extends JPanel {
                 JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
-    }
-    
-    /**
-     * Calcula el grado de un nodo (cantidad de conexiones activas).
-     * @param i Índice del nodo
-     * @param n Cantidad total de proteínas
-     * @param matriz Matriz de pesos del grafo
-     * @param activas Array de proteínas activas
-     * @return Número de conexiones del nodo
-     */
-    private int calcularGrado(int i, int n, int[][] matriz, boolean[] activas) { //esto es un metodo duplicado, ya existe uno en centralidadgrado
-        int grado = 0;
-        for (int j = 0; j < n; j++) {
-            if (i != j && activas[j] && matriz[i][j] != infinito) {
-                grado++;
-            }
-        }
-        return grado;
     }
     
     /**

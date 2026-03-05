@@ -134,7 +134,7 @@ public class Grafo {
     */
     public int indexOf (String nombre){
         for (int i = 0; i < cantidadProteinas; i++) {
-            if (nombres[i].equals(nombre) && nombres[i] != null) { //añadi aqui un && para apendar algo que chequee que el nombre de i no sea null, porque equals no le gusta null  
+            if (nombres[i] != null && nombres[i].equals(nombre)) { //añadi aqui un && para apendar algo que chequee que el nombre de i no sea null, porque equals no le gusta null, el check de null debe estar primero 
                 return i;
             }
         }

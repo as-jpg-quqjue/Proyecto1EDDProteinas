@@ -38,8 +38,8 @@ public class BFS {
             
             for (int j = 0; j < n; j++) {
                 if (!visitadas[j] && grafo.getActivas()[j] && grafo.estanConectadas(i, j)) {
-                    visitadas[j] = true;  // ✅ CORREGIDO: j en lugar de i
-                    cola[colaIdx++] = j;  // ✅ CORREGIDO: j en lugar de i
+                    visitadas[j] = true;  
+                    cola[colaIdx++] = j; 
                 }
             }
         }

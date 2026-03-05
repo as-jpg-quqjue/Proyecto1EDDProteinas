@@ -254,6 +254,7 @@ public class InterfazGrafica extends javax.swing.JPanel {
                     // Agregar Proteína
                     String nombre = JOptionPane.showInputDialog(this, "Nombre de la nueva proteína:");
                     if (nombre != null && !nombre.trim().isEmpty()) {
+                        nombre = Normalizador.NormalizarTexto(nombre); //añadi esta normalización para facilitar la busqueda
                             if (grafo.indexOf(nombre) == -1)
                             {
                             String nombreF = Normalizador.NormalizarTexto(nombre);
@@ -284,6 +285,7 @@ public class InterfazGrafica extends javax.swing.JPanel {
                     // Eliminar Proteína
                     String nombre = JOptionPane.showInputDialog(this, "Nombre de la proteína a eliminar:");
                     if (nombre != null && !nombre.trim().isEmpty()) {
+                        nombre = Normalizador.NormalizarTexto(nombre); //añadi esta normalización para facilitar la busqueda
                         if (grafo.indexOf(nombre) != -1)
                         {
                             grafo.removerProteina(nombre.trim());
@@ -318,11 +320,21 @@ public class InterfazGrafica extends javax.swing.JPanel {
                 if (origen != null && destino != null && pesoStr != null && !origen.equals(destino)) {
                     try {
                         int peso = Integer.parseInt(pesoStr.trim());
-                        String origenF = Normalizador.NormalizarTexto(origen); //normalizamos estos dos nombres si no existen
-                        String destinoF = Normalizador.NormalizarTexto(destino);
-                        grafo.agregarConexión(origenF.trim(), destinoF.trim(), peso);
-                        output.setText("✅ Conexión agregada: " + origenF + " ↔ " + destinoF +
+                        if (peso >= 0){
+                            String origenF = Normalizador.NormalizarTexto(origen); //normalizamos estos dos nombres si no existen
+                            String destinoF = Normalizador.NormalizarTexto(destino);
+                            grafo.agregarConexión(origenF.trim(), destinoF.trim(), peso);
+                            output.setText("✅ Conexión agregada: " + origenF + " ↔ " + destinoF +
                                 " (peso: " + peso + ")");
+                        }
+                        else { //este else cubre el caso donde el peso es negativo
+                            output.setText("❌ Error: No puedes crear una conexión entre proteinas negativas.");
+                    JOptionPane.showMessageDialog(this,
+                            "No puedes crear una conexión entre proteinas negativa.",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                        }
+                            
                     } catch (NumberFormatException e) {
                         output.setText("❌ Error: El peso debe ser un número entero.");
                         JOptionPane.showMessageDialog(this,
@@ -508,7 +520,8 @@ public class InterfazGrafica extends javax.swing.JPanel {
         if (nombreInicio == null || nombreInicio.trim().isEmpty()) {
             return;
         }
-        
+        //añadi esto para normalizar el texto en la busqueda
+        nombreInicio = Normalizador.NormalizarTexto(nombreInicio);
         int inicio = grafo.indexOf(nombreInicio.trim());
         
         if (inicio == -1) {
@@ -541,7 +554,7 @@ public class InterfazGrafica extends javax.swing.JPanel {
                 resultado = buscadorD.dfsComponente(inicio, grafo);
                 break;
         }
-        output.setText("🔍 Complejos Proteicos Detectados\n");
+        output.setText("Complejos Proteicos Detectados\n");
         output.append("========================================\n");
         output.append("Proteína inicial: " + nombreInicio + "\n");
         output.append("Proteínas en el componente: " + resultado.length + "\n\n");
@@ -564,6 +577,10 @@ public class InterfazGrafica extends javax.swing.JPanel {
         
         String origen = JOptionPane.showInputDialog(this, "Nombre de la Proteína de Origen:");
         String destino = JOptionPane.showInputDialog(this, "Nombre de la Proteína de Destino:");
+        
+        //añadi estas lineas para normalizar la busqueda
+        origen = Normalizador.NormalizarTexto(origen);
+        destino = Normalizador.NormalizarTexto(destino);
         
         if (origen == null || destino == null || origen.trim().isEmpty() || destino.trim().isEmpty()) {
             output.setText("❌ Entrada inválida.");
@@ -590,7 +607,7 @@ public class InterfazGrafica extends javax.swing.JPanel {
             dijkstra.algoritmoDijkstra(grafo, fin);
             Lista<Integer> ruta = dijkstra.obtenerCamino(fin);
             
-            output.setText("🛤️ Ruta Metabólica Más Corta\n");
+            output.setText("Ruta Metabólica Más Corta\n");
             output.append("========================================\n");
             output.append("Origen: " + origen + " → Destino: " + destino + "\n");
             output.append("Costo total: " + dijkstra.getDistancia(fin) + "\n\n");
@@ -618,7 +635,7 @@ public class InterfazGrafica extends javax.swing.JPanel {
     }//GEN-LAST:event_RMMCActionPerformed
     
     /**
-     * Este procedimiento busca la centralidad del grafo para encontrar la proteina con la mayor cantidad de conexiones.
+     * Este procedimiento busca la centralidad del grafo para encontrar la proteina (o proteinas si hay varias de misma cantidad) con la mayor cantidad de conexiones.
      * @param evt 
      */
     private void HubsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HubsActionPerformed
@@ -628,25 +645,28 @@ public class InterfazGrafica extends javax.swing.JPanel {
         }
         
         CentralidadGrado cg = new CentralidadGrado(grafo);
-        int mejorProteinaIndex = cg.centralidadPosicion();
+        Lista<Integer> mejorProteinaLista = cg.centralidadPosicion();
+        output.setText("Identificación de Hubs (Centralidad de Grado)\n");
+        output.append("========================================\n"); 
         
-        if (mejorProteinaIndex != -1) {
-            String nombreMejor = grafo.getNombres()[mejorProteinaIndex];
-            int cantidadConexiones = cg.grado(mejorProteinaIndex, grafo.getCantidadProteinas());
-            
-            output.setText("Identificación de Hubs (Centralidad de Grado)\n");
-            output.append("========================================\n");
-            output.append("Proteína más esencial (Hub): " + nombreMejor + "\n");
-            output.append("Cantidad de interacciones: " + cantidadConexiones + "\n");
-            output.append("Índice en memoria: " + mejorProteinaIndex + "\n\n");
+        if (mejorProteinaLista.getiN() != 0) { //Modifique esta función para iterar por todas las proteinas de mayor tamaño.
+            for (int i = 0; i < mejorProteinaLista.getiN(); i++) {
+                  int iDProteina = mejorProteinaLista.buscarPosición(i);
+                  String nombreMejor = grafo.getNombres()[iDProteina];
+                  int cantidadConexiones = cg.grado(iDProteina, grafo.getCantidadProteinas());
+                output.append("Proteína más esencial (Hub): " + nombreMejor + "\n");
+                output.append("Cantidad de interacciones: " + cantidadConexiones + "\n");
+                output.append("Índice en memoria: " + grafo.indexOf(nombreMejor)+ "\n\n");
+                output.append("========================================\n"); 
+
+                JOptionPane.showMessageDialog(this,
+                    "Hub identificado: " + nombreMejor + "\n" +
+                    "Conexiones: " + cantidadConexiones,
+                    "Hub Detectado",
+                    JOptionPane.INFORMATION_MESSAGE);  
+            }
             output.append(" Esta proteína es una diana terapéutica primaria.\n");
-            output.append("   Si es anulada, podría mitigar el efecto del patógeno.");
-            
-            JOptionPane.showMessageDialog(this,
-                "Hub identificado: " + nombreMejor + "\n" +
-                "Conexiones: " + cantidadConexiones,
-                "Hub Detectado",
-                JOptionPane.INFORMATION_MESSAGE);
+            output.append(" Si es anulada, podría mitigar el efecto del patógeno.");
         } else {
             output.setText("❌ No se pudo identificar ningún Hub.");
         }
