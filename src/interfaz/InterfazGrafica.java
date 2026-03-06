@@ -699,9 +699,9 @@ public class InterfazGrafica extends javax.swing.JPanel {
      * @param evt 
      */
     private void GrafoNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GrafoNuevoActionPerformed
-        String[] opciones = {"Sí", "No"};
+        String[] opciones = {"Sí", "No", "Cancelar"};
         int seleccion = JOptionPane.showOptionDialog(this,
-            "¿Seguro? El grafo anterior será eliminado.",
+            "¿Desea guardar el grafo actual antes de crear un nuevo grafo?",
             "Nuevo Grafo",
             JOptionPane.DEFAULT_OPTION,
             JOptionPane.QUESTION_MESSAGE,
@@ -710,11 +710,18 @@ public class InterfazGrafica extends javax.swing.JPanel {
              opciones[0]);
         switch (seleccion) {
             case 0: 
+                ActualizarRepositorioActionPerformed(evt);
                 grafo = new Grafo(2);
                 guardadoCSV.setArchivoActual(null);
                 output.setText("Nuevo grafo vacio creado.");
                 break;
             case 1:
+                grafo = new Grafo(2);
+                guardadoCSV.setArchivoActual(null);
+                output.setText("Nuevo grafo vacio creado.");
+                break;
+                
+            case 2:
                 output.setText("❌ Nuevo grafo cancelado.");
                 break;
                         
