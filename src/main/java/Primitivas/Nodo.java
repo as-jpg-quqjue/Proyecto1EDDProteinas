@@ -7,12 +7,22 @@ package main.java.Primitivas;
 /**
  *Es un nodo simple con dato y un puntero.
  * @author cesar
- * @param <T>
+ * @param <T> Un tipo de dato generico que se utiliza en lugar de un tipo de dato especifico.
  */
 public class Nodo<T> {
+    /**
+     * Un dato para guardar en el nodo.
+     */
     protected T dato;
+    /**
+     * Un "apuntador" al siguiente nodo.
+     */
     protected Nodo<T> pSig;
-
+    
+    /**
+     * Se construye el nodo asignando su dato y el siguiente como nulo.
+     * @param dato El tipo de dato que se va a guardar en el nodo.
+     */
     public Nodo(T dato) {
         this.dato = dato;
         this.pSig = null;

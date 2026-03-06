@@ -8,13 +8,36 @@ import main.java.Primitivas.Lista;
  * @author mipc2
  */
 public class Dijkstra {
-    
+    /**
+     * Un array de nodos explorados.
+     */
     private boolean[] explorados;
+    
+    /**
+     * Un array de las distancias a ciertos nodos.
+     */
     private int[] distancias;
+    
+    /**
+     * Un array que guarda los predecesores en el camino.
+     */
     private int[] predecesores;
+    
+    /**
+     * Indice de la proteina donde se inicia.
+     */
     private int inicio;
+    
+    /**
+     * Esta es una constante de infinito para utilizar cuando no hay caminos entre proteinas. Se realiza un entero maximo entre dos para evitar problemas de overflow.
+     */
     private int infinito = Integer.MAX_VALUE / 2;
     
+    /**
+     * El constructor crea la clase Dijkstra, asignando las variables de la clase Dijkstra según el grafo de referencia.
+     * @param grafo El grafo donde se va a basar el Dijkstra.
+     * @param inicio El punto de partida de la buscada.
+     */
     public Dijkstra(Grafo grafo, int inicio) {
         int cantidadProteinas = grafo.getCantidadProteinas();
         this.explorados = new boolean[cantidadProteinas];

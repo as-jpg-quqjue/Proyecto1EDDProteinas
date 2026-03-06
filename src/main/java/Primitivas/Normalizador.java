@@ -17,7 +17,10 @@ import java.util.regex.Pattern;
  * @author milaptop
  */
 public class Normalizador {
-    private static Pattern diacritos = Pattern.compile("\\p{InCombiningDiacriticalMarks}+"); //esto compila todos los caracteres raros comos ´, ~, etc en un regex. 
+    /**
+     * Esto compila todos los caracteres comos ´, ~, etc, en un regex. 
+     */
+    private static Pattern diacritos = Pattern.compile("\\p{InCombiningDiacriticalMarks}+"); 
     
     /**
      * Esta función estática recibe un String inputS, en caso de que no este vació, se utiliza el estático diacritos y lo compara, separando primero los símbolos diacríticos y luego reemplazandolos usando el regex con nulo, finalmente cambiando todas las letras a uppercase y retornando un inputF.
@@ -25,7 +28,7 @@ public class Normalizador {
      * @return Un string normalizado sin carácteres especiales (acentos, diéresis).
      */
     public static String NormalizarTexto(String inputS){
-        
+     if (inputS != null){ //añadi este chequeo de null para evitar errores de isBlank quejandose de un objeto null   
         if (!inputS.isBlank()){ //revisa si esta vacio el string mandado
             String inputN = Normalizer.normalize(inputS, Normalizer.Form.NFD); //separa todos los caracteres especiales en dos
             String inputF = diacritos.matcher(inputN).replaceAll(""); //reemplaza todo lo que encuentra en el regex con espacios blancos
@@ -33,6 +36,10 @@ public class Normalizador {
         }
         else{
             return null;
+        }
+     }
+     else{
+        return null;
         }
     }
 }

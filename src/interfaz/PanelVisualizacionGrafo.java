@@ -20,8 +20,19 @@ import java.awt.*;
  */
 public class PanelVisualizacionGrafo extends JPanel {
     
+    /**
+     * El grafo de GraphStream para visualizar.
+     */
     private Graph grafoVisual;
+    
+    /**
+     * Esta es una constante de infinito para utilizar cuando no hay conexiones entre proteinas. Se realiza un entero maximo entre dos para evitar problemas de overflow.
+     */
     private int infinito = Integer.MAX_VALUE / 2;
+    
+    /**
+     * El SwingViewer de GraphStream.
+     */
     private SwingViewer viewer;
     
     /**

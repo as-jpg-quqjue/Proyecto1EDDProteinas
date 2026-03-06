@@ -5,7 +5,7 @@
 package interfaz;
 
 /**
- *
+ * Esta clase es la interfaz gráfica del programa, es el unico método de interacción con el programa.
  * @author josep
  */
 
@@ -27,13 +27,34 @@ import main.java.buscadores.DFS;
 
 public class InterfazGrafica extends javax.swing.JPanel {
     
+    /**
+     * La clase de guardado del sistema.
+     */
     private GuardadoCSV gargar = new GuardadoCSV();
     
+    /**
+     * Grafo del sistema.
+     */
     private Grafo grafo;
+    
+    /**
+     * Otra clase de guardado del sistema.
+     */
     private GuardadoCSV guardadoCSV;
+    
+    /**
+     * El panel de visualización del grafo.
+     */
     private PanelVisualizacionGrafo panelVisualizacion;
+    
+    /**
+     * La ventana del programa JDialog.
+     */
     private JDialog dialogVisualizacion;
     
+    /**
+     * Inicializamos la interfaz con un nuevo grafo, guardadoCSV e interfaz grafica, luego definiendo el tamaño especifico de la ventana y centrarlo.
+     */
     public InterfazGrafica() {
         initComponents();
         // Inicializamos un grafo vacío por defecto

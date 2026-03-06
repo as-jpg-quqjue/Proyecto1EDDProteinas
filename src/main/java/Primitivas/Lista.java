@@ -10,10 +10,22 @@ package main.java.Primitivas;
  * @param <T> Un tipo de dato generico que se usa en lugar de un tipo de dato específico.
  */
 public class Lista<T> {
+    /**
+     * Referencia al primero nodo de la lista.
+     */
     private Nodo<T> pInicial;
+    /**
+     * Referencia al ultimo nodo de la lista.
+     */
     private Nodo<T> pFinal;
+    /**
+     * Tamaño de la lista.
+     */
     private int iN;
-
+    
+    /**
+     * Construye la lista definiendo el tamaño como 0 y inicializadola vacia.
+     */
     public Lista() {
         this.iN = 0;
         this.pFinal = null;

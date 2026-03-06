@@ -12,8 +12,15 @@ import main.java.Primitivas.Lista;
  * @author cesar
  */
 public class CentralidadGrado {
+    /**
+     * El grafo de referencia.
+     */
     private Grafo grafoAux;
-
+    
+    /**
+     * Se construye la centralidad asignando el grafo.
+     * @param grafo El grafo que se va a pasar como el Grafo auxiliar.
+     */
     public CentralidadGrado(Grafo grafo) {
         this.grafoAux = grafo;
     }

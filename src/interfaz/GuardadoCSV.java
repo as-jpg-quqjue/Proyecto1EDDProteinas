@@ -7,11 +7,13 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
 import main.java.Primitivas.Normalizador;
 /**
- * 
+ * Esta clase se encarga de guardar, cargar y crear los archivos donde se guardan los datos del grafo.
  * @author cesar
  */
 public class GuardadoCSV {
-    
+    /**
+     * Un archivo estatico para todo el proyecto.
+     */
     private static File archivoActual = null;
     
     /**
@@ -131,7 +133,11 @@ public class GuardadoCSV {
     public String getArchivoActual() {
         return archivoActual != null ? archivoActual.getAbsolutePath() : null;
     }
-
+    
+    /**
+     * Este procedimiento recibe un archivo y lo asigna como el archivo actual de la clase.
+     * @param archivoActual Un archivo que se desea asignar como el archivo actual de la clase.
+     */
     public void setArchivoActual(File archivoActual) {
         GuardadoCSV.archivoActual = archivoActual;
     }

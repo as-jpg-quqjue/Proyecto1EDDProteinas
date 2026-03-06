@@ -3,7 +3,7 @@ package main.java.buscadores;
 import main.java.Primitivas.Grafo;
 
 /**
- * 
+ * La clase de Breadth-First Search (BFS), donde se contiene la función de BFS.
  * @author cesar
  */
 public class BFS {

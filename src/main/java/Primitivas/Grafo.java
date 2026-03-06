@@ -8,12 +8,31 @@ package main.java.Primitivas;
  * @author cesar
  */
 public class Grafo {
+    /**
+     * Array de nombres de las proteinas.
+     */
     private String[] nombres;
+    /**
+     * Array de las proteinas activas.
+     */
     private boolean[] activas;
+    /**
+     * Matriz del peso de las conexiones.
+     */
     private int[][] matrizPeso;
+    /**
+     * Cantidad de proteinas del grafo.
+     */
     private int cantidadProteinas;
+    /**
+     * Esta es una constante de infinito para utilizar cuando no hay conexiones entre proteinas. Se realiza un entero maximo entre dos para evitar problemas de overflow.
+     */
     private int infinito = Integer.MAX_VALUE / 2;
-
+    
+    /**
+     * Construye un nuevo Grafo para la gestión de proteínas y inicializa los arrays de nombres, activas, y la matrizPeso.
+     * @param cantidadInicial La cantidad inicial de proteinas para crear el grafo.
+     */
     public Grafo(int cantidadInicial) {
         if (cantidadInicial > 1) {
             nombres = new String[cantidadInicial];

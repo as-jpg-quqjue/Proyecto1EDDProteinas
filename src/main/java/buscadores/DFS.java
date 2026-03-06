@@ -7,7 +7,7 @@ package main.java.buscadores;
 import main.java.Primitivas.Grafo;
 
 /**
- *
+ * La clase de Depth-First Search (DFS) donde se contiene la función de DFS.
  * @author cesar
  */
 public class DFS {
