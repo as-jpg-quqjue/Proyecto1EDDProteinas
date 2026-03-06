@@ -1,7 +1,7 @@
-package main.java.rutas;
+package Rutas;
 
-import main.java.Primitivas.Grafo;
-import main.java.Primitivas.Lista;
+import Primitivas.Grafo;
+import Primitivas.Lista;
 
 /**
  * Implementa el algoritmo de Dijkstra para encontrar la ruta más corta.

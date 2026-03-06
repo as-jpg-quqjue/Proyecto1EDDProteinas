@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package main.java.Primitivas;
+package Primitivas;
 /**
  * Es un grafo que mantiene cuenta de "nodos" a las que se llaman proteinas mediante arrays y las conexiones entre ellas.
  * @author cesar

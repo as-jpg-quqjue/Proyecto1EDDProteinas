@@ -1,11 +1,11 @@
 package interfaz;
 
-import main.java.Primitivas.Grafo;
+import Primitivas.Grafo;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
-import main.java.Primitivas.Normalizador;
+import Primitivas.Normalizador;
 /**
  * Esta clase se encarga de guardar, cargar y crear los archivos donde se guardan los datos del grafo.
  * @author cesar

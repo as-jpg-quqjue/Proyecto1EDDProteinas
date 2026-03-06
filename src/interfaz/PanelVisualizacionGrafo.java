@@ -4,8 +4,8 @@
  */
 package interfaz;
 
-import main.java.Primitivas.Grafo;
-import main.java.buscadores.CentralidadGrado;
+import Primitivas.Grafo;
+import Buscadores.CentralidadGrado;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.implementations.SingleGraph;
 import org.graphstream.ui.swing_viewer.SwingViewer;

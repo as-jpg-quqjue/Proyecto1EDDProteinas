@@ -9,20 +9,20 @@ package interfaz;
  * @author josep
  */
 
-import main.java.Primitivas.Grafo;
-import main.java.buscadores.BFS;
-import main.java.buscadores.CentralidadGrado;
-import main.java.rutas.Dijkstra;
-import main.java.Primitivas.Normalizador;
+import Primitivas.Grafo;
+import Buscadores.BFS;
+import Buscadores.CentralidadGrado;
+import Rutas.Dijkstra;
+import Primitivas.Normalizador;
 import java.io.File;
 import java.io.IOException;
-import main.java.Primitivas.Lista;
+import Primitivas.Lista;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JDialog;  
 import java.awt.Frame;
-import main.java.buscadores.DFS;
+import Buscadores.DFS;
 
 
 public class InterfazGrafica extends javax.swing.JPanel {
@@ -250,6 +250,14 @@ public class InterfazGrafica extends javax.swing.JPanel {
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
+    
+    /**
+     * Este procedimiento recibe un grafo y lo convierte en el grafo de la interfaz. Se realiza esto para poder cargar un archivo predeterminado.
+     * @param nuevoGrafo Un grafo que se quiere convertir en el grafo de la interfaz.
+     */
+    public void setGrafoInterfaz(Grafo nuevoGrafo){
+        this.grafo = nuevoGrafo;
+    }
     
     /**
      * Este procedimiento cicla por cuatro opciónes para modificar el grafo, que incluyen añadir o eliminar una proteina o una conexión.

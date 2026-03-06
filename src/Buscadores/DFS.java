@@ -2,9 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package main.java.buscadores;
+package Buscadores;
 
-import main.java.Primitivas.Grafo;
+import Primitivas.Grafo;
 
 /**
  * La clase de Depth-First Search (DFS) donde se contiene la función de DFS.
