@@ -33,7 +33,7 @@ public class Nodo<T> {
      * @return 
      */
     
-    public T getDato() { //esta funcion retorna el dato guardado dentro del nodo
+    public T getDato() { 
         return dato;
     }
     
@@ -41,7 +41,7 @@ public class Nodo<T> {
      * Este procedimiento recibe un dato tipo T y lo asigna como el dato del nodo.
      * @param dato El dato que se desea asignar como el .dato del nodo.
      */
-    public void setDato(T dato) { //este procedimiento reemplaza el dato dentro del nodo
+    public void setDato(T dato) { 
         this.dato = dato;
     }
     
@@ -50,7 +50,7 @@ public class Nodo<T> {
      * @return El siguiente nodo según el puntero de este nodo.
      */
     
-    public Nodo<T> getpSig() { //esta funcion retorna el psiguiente de un nodo de cualquier tipo
+    public Nodo<T> getpSig() { 
         return pSig;
     }
     
@@ -59,7 +59,7 @@ public class Nodo<T> {
      * Este procedimiento recibe un nodo y lo asigna como el que le sigue a este nodo.
      * @param pSig Un dato tipo Nodo que se desea asignar como el siguiente en la lista.
      */
-    public void setpSig(Nodo<T> pSig) { //este procedimiento asigna un nodo de cualquier tipo como el psiguiente
+    public void setpSig(Nodo<T> pSig) { 
         this.pSig = pSig;
     }
     
