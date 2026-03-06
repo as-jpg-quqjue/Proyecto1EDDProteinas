@@ -4,7 +4,7 @@
  */
 package main.java.Primitivas;
 /**
- *
+ * Es un grafo que mantiene cuenta de "nodos" a las que se llaman proteinas mediante arrays y las conexiones entre ellas.
  * @author cesar
  */
 public class Grafo {
@@ -12,6 +12,7 @@ public class Grafo {
     private boolean[] activas;
     private int[][] matrizPeso;
     private int cantidadProteinas;
+    private int infinito = Integer.MAX_VALUE / 2;
 
     public Grafo(int cantidadInicial) {
         if (cantidadInicial > 1) {
@@ -23,27 +24,33 @@ public class Grafo {
         iniciarMatriz(0,cantidadInicial);
     }
     
-    /** 
-    Inicia la matriz, asigna cero si no hay conexión y asigna 9999 si hay conexión.
-    */
+    /**
+     *  Inicia la matriz, asigna infinito a todas las conexiones.
+     * @param desde Un entero que es el indice de la proteina origen.
+     * @param hasta Un entero que es el indice de la proteina destino.
+     */
     public void iniciarMatriz(int desde, int hasta){
         for (int i = desde; i < hasta; i++) {
             for (int j = 0; j < hasta; j++) {
-                matrizPeso[i][j] = 9999;
+                matrizPeso[i][j] = infinito;
             }
         }
         for (int i = 0; i <hasta; i++) {
             for (int j = desde; j < hasta; j++) {
-                matrizPeso[i][j] = 9999;
+                matrizPeso[i][j] = infinito;
             }
         }
         for (int i = 0; i < hasta; i++) {
-            matrizPeso[i][i] = 9999;
+            matrizPeso[i][i] = infinito;
         }
 
     }
     
-    //esta funcion recibe un nombre y agrega una proteina con ese nombre, retornando la cantidad nueva de proteinas
+    /**
+     * Esta función recibe un String nombre y verificando si no existe en el grafo, luego continua garantizando la capacidad, marcandola en la lista de nombres y activandola, retornando la nueva cantidad de proteinas.  
+     * @param nombre Un string que se le desea llamar a la proteina.
+     * @return La nueva cantidad de proteinas del grafo.
+     */
     public int agregarProteina (String nombre){
         int i = indexOf(nombre);
         if (i != -1) {
@@ -56,6 +63,12 @@ public class Grafo {
         return cantidadProteinas++;
     }
     //esta es la funcion vieja de agregar conexion, que interactua mas directamente con el grafo, es utilizado por dijkstra
+    /**
+     * Este procedimiento recibe los enteros a y b, y si al compararlos entiende que son distintos, los añade a la matrizPeso en ambos lados con el int peso.
+     * @param a Un entero que es el índice+1 de la proteina de origen de la conexión.
+     * @param b Un entero que es el indice+1 de la proteina de destino de la conexión.
+     * @param peso //Un entero que es el peso de la conexión entre a y b.
+     */
     public void agregarConexiónInt (int a, int b, int peso){
            //COMENTARIO: se insertan los datos de las posiciones contando desde 1, no desde 0 (se inserta 4 para la proteina en el indice 3 [4to lugar])
         if (a != b) {
@@ -64,9 +77,30 @@ public class Grafo {
         }
     }
     
-     /** 
-    * Agrega una conexión entre proteínas de forma bilateral, es necesario saber el nombre de las proteinas a conectar.
-    */
+    /**
+     * Esta función recibe dos strings  que son nombres de proteinas y le busca sus indices, si existen en el grafo, se les pone su conexión como infinito (lo que lo marca como inexistente la conexión).
+     * @param a Este String es el nombre de la proteina origen con la conexión que se desea eliminar.
+     * @param b Este String es el nombre de la proteina destino con la conexión que se desea eliminar.
+     * @return Un booleano que es true si se eliminó la conexión o false si no.
+     */
+    public boolean eliminarConexión (String a, String b){
+        int valorA = indexOf(a);
+        int valorB = indexOf(b);
+        if (valorA == -1 || valorB == -1) {
+            return false;
+        }else{
+            matrizPeso[valorA][valorB] = infinito;
+            matrizPeso[valorB][valorA] = infinito;
+            return true;
+        }
+    }
+    
+     /**
+      * Agrega una conexión entre proteínas de forma bilateral, es necesario saber el nombre de las proteinas a conectar, debido a como se agregan las proteinas mediante agregarProteinas, se pueden crear nuevas proteinas mediante este procedimiento.
+      * @param a Un string que es el nombre de la proteina origen a conectar.
+      * @param b Un string que es el nombre de la proteina destino a conectar.
+      * @param peso Un entero que marca el peso de la conexión.
+      */
     public void agregarConexión (String a, String b, int peso){
         int ia = agregarProteina(a);
         int ib = agregarProteina(b);
@@ -76,28 +110,41 @@ public class Grafo {
         }
     }
     
-    //este procedimiento recibe el string nombre y la busca en el grafo, si existe, la desactiva y pone el peso en 9999
+    /**
+     * Este procedimiento recibe el string nombre y la busca en el grafo, si existe, la desactiva y quita todas las conexiones asociadas.
+     * @param nombre Un string que es el nombre de la proteina que se desea eliminar.
+     */
     public void removerProteina (String nombre){
         int i = indexOf(nombre);
         if (i != -1) {
             activas[i] = false;
+            nombres[i] = null;
             for (int j = 0; j < cantidadProteinas; j++) {
-                matrizPeso[i][j] = 9999;
-                matrizPeso[j][i] = 9999;
+                matrizPeso[i][j] = infinito;
+                matrizPeso[j][i] = infinito;
             }
+            cantidadProteinas--;
         }
     }
     
-    //esta funcion recibe el nombre de una proteina y la busca hasta conseguirla, sino, retorna -1 como marcador de que no esta
+   /**
+    * Esta funcion recibe el nombre de una proteina y la busca hasta conseguirla, sino, retorna -1 como marcador de que no esta.
+    * @param nombre Un string que es el nombre de la proteina que se le desea conseguir el indice.
+    * @return Un entero que es el indice de la proteina buscada, si no existe la proteina, se retorna -1.
+    */
     public int indexOf (String nombre){
         for (int i = 0; i < cantidadProteinas; i++) {
-            if (nombres[i].equals(nombre)) {
+            if (nombres[i] != null && nombres[i].equals(nombre)) { //añadi aqui un && para apendar algo que chequee que el nombre de i no sea null, porque equals no le gusta null, el check de null debe estar primero 
                 return i;
             }
         }
         return -1;
     }
-    //AÑADIR DOCUMENTACION DE QUE HACE ESTE PROCEDIMIENTO
+    
+    /**
+     * Este procedimiento recibe el tamaño minimo de proteinas en el grafo, y base a esto crea nuevos arrays y matrizes con mayores tamaños para garantizar el tamaño de proteinas añadidas en el futuro.
+     * @param min Un entero que es el minimo tamaño de la proteina 
+     */
     public void garantizarCapacidad(int min){
         if (min <= nombres.length) return;
         int nuevaCapa = nombres.length*2;
@@ -114,7 +161,7 @@ public class Grafo {
         }
         for (int i = 0; i < nuevaCapa; i++) {
             for (int j = 0; j < nuevaCapa; j++) {
-                nuevaMatrizPeso[i][j] = 9999;
+                nuevaMatrizPeso[i][j] = infinito;
             }
         }
         for (int i = 0; i < cantidadProteinas; i++) {
@@ -127,48 +174,51 @@ public class Grafo {
         matrizPeso = nuevaMatrizPeso;
     }
     
-    //esta funcion recibe dos ints que actuan como posiciones de dos proteinas, y prueba si su peso de matriz es diferente de 0
+    /**
+     * Esta función recibe dos ints que actuan como posiciones de dos proteinas, y prueba si su peso de matriz es diferente de 0.
+     * @param i Un entero que es el indice de la proteina origen.
+     * @param j Un entero que es el indice de la proteina destino.
+     * @return Un booleano que es verdadero si estan conectadas, o falso si no lo estan..
+     */
     public boolean estanConectadas (int i, int j){
         if (i < 0 || j < 0 || i>=cantidadProteinas || j>=cantidadProteinas) {
-            System.out.println("ADVERTENCIA: Insertaste una ubicacion negativa o una proteina fuera de la cantidad de proteinas maximas.");
+            // En este caso, o alguna de los indices de las proteinas no existen, asi que se retorna falso 
             return false;
         }
         else {
-            return (i!=j && matrizPeso[i][j] != 9999); //retorna true si i es diferente de j y si el peso entre i y j son diferentes de 9999
-        }
-    }
-    
-    //este procedimiento imprime el peso registrado en todas las proteinas en la matriz
-    public void imprimirMatrizPeso (){
-        for (int i = 0; i < cantidadProteinas; i++) {
-            System.out.print(nombres[i] + " ");
-        }
-        System.out.println("");
-        for (int i = 0; i < cantidadProteinas; i++) {
-            for (int j = 0; j < cantidadProteinas; j++) {
-                System.out.print(matrizPeso[i][j]+ " ");
-            }
-            System.out.println("");
+            return (i!=j && matrizPeso[i][j] != infinito); //retorna true si i es diferente de j y si el peso entre i y j son diferentes de 9999
         }
         
     }
     
-    //esta funcion retorna un array con todos los nombres del grafo
+    /**
+     * Esta función devuelve todos los nombres de proteinas registrados en el grafo
+     * @return Un array de strings con todos los nombres del grafo.
+     */
     public String[] getNombres() {
         return nombres;
     }
     
-    //esta funcion retorna un array con todos los activos del grafo
+    /**
+     * Esta función retorna todas las proteinas activas en el grafo.
+     * @return Un array de booleanos que contiene las proteinas activas.
+     */
     public boolean[] getActivas() {
         return activas;
     }
     
-    //esta funcion retorna una matriz con todos los pesos del grafo
+    /**
+     * Esta función retorna los pesos guardados en la matriz de conexiones.
+     * @return Una matriz de enteros que guarda los pesos de todas las conexiones.
+     */
     public int[][] getMatrizPeso() {
         return matrizPeso;
     }
     
-    //esta funcion retorna un int que es la cantidad de proteinas del grafo
+    /**
+     * Esta función retorna la cantidad de proteinas que tiene contadas el grafo.
+     * @return Un entero que son la cantidad de proteinas totales.
+     */
     public int getCantidadProteinas() {
         return cantidadProteinas;
     }

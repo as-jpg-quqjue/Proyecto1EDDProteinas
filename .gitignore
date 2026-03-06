@@ -1,2 +1,7 @@
 /target/
 /dist/
+/nbproject/
+build/
+dist/
+nbproject/private/
+*.class

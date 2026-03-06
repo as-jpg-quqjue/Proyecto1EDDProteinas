@@ -7,7 +7,7 @@ package main.java.Primitivas;
 /**
  *Es una lista primitiva simple con funciones de insertar y buscar posición.
  * @author cesar
- * @param <T>
+ * @param <T> Un tipo de dato generico que se usa en lugar de un tipo de dato específico.
  */
 public class Lista<T> {
     private Nodo<T> pInicial;
@@ -19,7 +19,10 @@ public class Lista<T> {
         this.pFinal = null;
         this.pInicial = null;
     }
-    //esto recibe un nodo de tipo dato T y lo inserta, cambiando el caso segun si existe o no otros nodos
+    /**
+     * Este procedimiento recibe un tipo de dato x, lo pone en un nodo y lo inserta a la lista, en el caso de que no hayan nodos en la lista, se le asigna como el primero, en el caso que no, se le asigna al siguiente del ultimo y a este nuevo se asigna como ultimo.
+     * @param x El dato que queremos insertar al nodo para luego insertar a la lista.
+     */
     public void insertar (T x){ 
         Nodo pNew = new Nodo(x);
         iN++;
@@ -32,7 +35,11 @@ public class Lista<T> {
         }
     }
     
-    //esta funcion recibe un int y luego va buscando hasta llegar a la posicion de int iB deseada, retornando el dato de ese nodo buscado
+    /**
+     * Esta función recibe un entero y luego va buscando hasta llegar a la posición del entero iB deseado, retornando el dato contenido en el nodo de esa dirección.
+     * @param iB La posición que deseamos buscar en la lista, como precondición, no puede ser mayor a iN-1.
+     * @return El dato que contiene la posición deseada.
+     */
     public T buscarPosición (int iB){
         Nodo aux =  pInicial;
         for (int i = 0; i < iB; i++) {
@@ -41,32 +48,50 @@ public class Lista<T> {
         return (T) aux.dato;
     }
     
-    //esta funcion retorna la inicial de la lista
+    /**
+     * Esta función retorna el nodo inicial de la lista.
+     * @return El nodo inicial de la lista.
+     */
     public Nodo<T> getpInicial() {
         return pInicial;
     }
     
-    //este procedimiento recibe un nodo de cualquier tipo y lo declara la inicial de la lista
+    /**
+     * Este procedimiento recibe un nodo de un tipo T y lo convierte en el pInicial de la lista.
+     * @param pInicial Un nodo de tipo T que deseamos convertir en el primero de la lista.
+     */
     public void setpInicial(Nodo<T> pInicial) {
         this.pInicial = pInicial;
     }
     
-    //similar a las dos funciones/procedimientos anteriores, esta returna la final de la lista
+    /**
+     * Esta función retorna el nodo final de la lista.
+     * @return El nodo final de la lista.
+     */
     public Nodo<T> getpFinal() {
         return pFinal;
     }
     
-    //este procidimiento recibe un nodo de cualquier tipo y lo declra la final de la lista
+    /**
+     * Este procedimiento recibe un nodo de tipo T y lo convierte en el pFinal de la lista.
+     * @param pFinal Un nodo de tipo T que deseamos convertir en el ultimo de la lista.
+     */
     public void setpFinal(Nodo<T> pFinal) {
         this.pFinal = pFinal;
     }
     
-    //esta funcion retorna el tamaño de la lista
+    /**
+     * Esta función retorna el tamaño de la lista.
+     * @return El iN de la lista.
+     */
     public int getiN() {
         return iN;
     }
     
-    //este procedimiento cambia el tamaño de la lista, para no tocar la proteccion de iN
+    /**
+     * Este procedimiento recibe un entero iN y lo convierte en el tamaño de la lista, se hace esto para no tocar la protección de iN directamente.
+     * @param iN Un entero que queremos convertir al tamaño de la lista.
+     */
     public void setiN(int iN) {
         this.iN = iN;
     }

@@ -11,39 +11,52 @@ import main.java.Primitivas.Grafo;
  * @author cesar
  */
 public class DFS {
-    //AÑADIR DOCUMENTACION DE QUE HACE ESTE PROCEDIMIENTO
+    
+    /**
+     * 
+     * @param inicio Un entero que es el indice del a proteina de inicio.
+     * @param grafo Un grafo donde se va a buscar las proteinas del componente.
+     * @return Un array que contiene todos los indices de las proteinas en el componente.
+     */
     public int [] dfsComponente (int inicio, Grafo grafo){
-        if (grafo.getCantidadProteinas() > 0 && inicio > 0 && inicio <= grafo.getCantidadProteinas()) {
+        int n = grafo.getCantidadProteinas();
+        
+        // Validaciones de seguridad
+        if (n > 0 && inicio >= 0 && inicio < n) {
             
-            boolean [] visitadas = new boolean [grafo.getCantidadProteinas()];
-            int [] arreglo = new int [grafo.getCantidadProteinas()];
-            int [] arregloAux = new int [grafo.getCantidadProteinas()];
-            int cabeza = 0;
-            int k = 0;
-            
+            boolean[] visitadas = new boolean[n];
+            int[] pila = new int[n];      // Actúa como stack para el DFS
+            int[] resultadoTmp = new int[n]; // Almacena el orden de visita
+            int tope = 0;                 // Puntero de la pila
+            int contador = 0;              // Cuántos nodos hemos visitado realmente
+
+            //Nodo de partida
             visitadas[inicio] = true;
-            arreglo[cabeza++] = inicio;
-            
-            while (cabeza > 0){
-                int i = arreglo[--cabeza];
-                arregloAux [k++] = i;
-                for (int j = grafo.getCantidadProteinas()-1; j >= 0; j--) {
-                    if (!visitadas[j] && grafo.estanConectadas(i, j)) {
-                        visitadas[i] = true;
-                        arreglo[cabeza++] = i;
-                    } else if (!grafo.getActivas()[j]) {
-                        continue;
+            pila[tope++] = inicio;
+
+            while (tope > 0) {
+                // Sacar el último elemento
+                int actual = pila[--tope];
+                resultadoTmp[contador++] = actual;
+
+                //Explorar vecinos
+                for (int j = 0; j < n; j++) {
+                    // Si están conectados, el vecino no ha sido visitado y está activo
+                    if (!visitadas[j] && grafo.estanConectadas(actual, j) && grafo.getActivas()[j]) {
+                        visitadas[j] = true;
+                        pila[tope++] = j;    // Insertamos el vecino en la pila
                     }
                 }
             }
-            int [] salida = new int [k];
-            for (int i = 0; i < k; i++) {
-                salida[i] = arregloAux[i];
-                
+
+            //Ajusta al tamaño real de nodos encontrados
+            int[] salida = new int[contador];
+            for (int i = 0; i < contador; i++) {
+                salida[i] = resultadoTmp[i];
             }
             return salida;
-            
         }
+        
         return new int[0];
     }
 }
